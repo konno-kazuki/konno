@@ -1,0 +1,236 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="ja"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="WEB-INF/jsf/template.xhtml">
+        <ui:param name="dspTarget" value="manageNortice" />
+
+        <ui:define name="title">
+            <!--お知らせ-->
+            #{manageNorticeView.getItemCaption('title')}
+        </ui:define>
+
+        <ui:define name="content">
+
+            <h:outputScript library="javascript" name="sendCommon.js" />
+
+            <p:panel styleClass="full box">
+                <h:form id="dispForm">
+
+                    <p:dataTable
+                        id="norticeTable"
+                        var="nortice"
+                        value="#{manageNorticeView.manageNorticeList}"
+                        first="#{manageNorticeView.dataTable.first}"
+                        rows="#{manageNorticeView.dataTable.rows}"
+                        paginator="#{manageNorticeView.dataTable.paginator}"
+                        paginatorTemplate="#{manageNorticeView.dataTable.paginatorTemplate}"
+                        rowsPerPageTemplate="#{manageNorticeView.dataTable.rowsPerPageTemplate}"
+                        selectionMode="#{manageNorticeView.dataTable.selectionMode}"
+                        selection="#{manageNorticeView.selectedRowDataTmp}"
+                        rowStyleClass="#{nortice.rowStyle}"
+                        rowKey="#{nortice.id}">
+
+                        <p:ajax event="rowSelect"
+                                listener="#{manageNorticeView.eventRowSelect()}"
+                                update="inputForm dispForm" />
+                        <p:ajax event="page" listener="#{manageNorticeView.eventPage}" update="inputForm" />
+
+                        <p:column style="width: 5%; text-align: center">
+                            <p:selectBooleanCheckbox
+                                value="#{nortice.checked}" />
+                        </p:column>
+                        <!--件名-->
+                        <p:column class="textOverflow" headerText="#{manageNorticeView.getItemCaption('dspSubject')}" style="width: 20%;">
+                            <h:outputText class="pointer-events" value="#{nortice.subject}" />
+                        </p:column>
+                        <!--本文-->
+                        <p:column class="textOverflow" headerText="#{manageNorticeView.getItemCaption('dspContent')}" style="width: 20%;">
+                            <h:outputText class="pointer-events" value="#{nortice.content}" />
+                        </p:column>
+                        <!--開始日-->
+                        <p:column id="startTime" headerText="#{manageNorticeView.getItemCaption('dspStartDate')}" style="width: 25%">
+                            <h:outputText class="pointer-events" value="#{nortice.startTime}" >
+                                <!--yyyy年MM月dd日（EEE）-->
+                                <f:convertDateTime type="date" dateStyle="full" pattern="#{manageNorticeView.getItemCaption('dspDatePattern')}" timeZone="JST" />
+                            </h:outputText>
+                        </p:column>
+                        <!--終了日-->
+                        <p:column id="endTime" headerText="#{manageNorticeView.getItemCaption('dspEndDate')}" style="width: 25%">
+                            <h:outputText class="pointer-events" value="#{nortice.endTime}" >
+                                <!--yyyy年MM月dd日（EEE）-->
+                                <f:convertDateTime type="date" dateStyle="full" pattern="#{manageNorticeView.getItemCaption('dspDatePattern')}" timeZone="JST" />
+                            </h:outputText>
+                        </p:column>
+
+                    </p:dataTable>
+                </h:form>
+
+                <br/>
+
+                <h:form id="inputForm">
+
+                    <p:panelGrid id="inputGrid" style="width: 100%;" >
+                        <p:row>
+                            <p:column styleClass="ui-widget-header"
+                                      style="text-align: left;  vertical-align: top; height: 32px;" colspan="2" >
+                                <!--選択解除-->
+                                <p:commandButton id="selectClearBtn" value="#{manageConfigView.getItemCaption('dspBtnSelectClear')}"
+                                                 rendered="#{manageNorticeView.selected}"
+                                                 actionListener="#{manageNorticeView.eventSelectClear()}"
+                                                 update="inputForm dispForm"
+                                                 style='float:right'>
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <!--件名-->
+                            <p:column styleClass="ui-widget-header" style="width: 5%" >
+                                #{manageNorticeView.getItemCaption('dspSubject')}
+                            </p:column>
+                            <p:column>
+                                <!--件名を入力して下さい。-->
+                                <p:inputText id="subjectInput"
+                                             placeholder="#{manageNorticeView.getItemCaption('dspPlaceholder', 'dspSubject')}"
+                                             class="#{manageNorticeView.getClassName('', component.clientId)}"
+                                             value="#{manageNorticeView.selectedRowData.subject}"
+                                             label="#{manageNorticeView.getItemCaption('dspSubject')}"
+                                             maxlength="#{manageNorticeView.maxlenNorticeSubject}"
+                                             style="width:90%">
+                                </p:inputText>
+                            </p:column>
+                        </p:row>
+                        <p:row style="height: Auto">
+                            <!--本文-->
+                            <p:column styleClass="ui-widget-header" >
+                                #{manageNorticeView.getItemCaption('dspContent')}
+                            </p:column>
+                            <p:column>
+                                <!--本文を入力して下さい。-->
+                                <p:inputTextarea id="contentInput"
+                                                 placeholder="#{manageNorticeView.getItemCaption('dspPlaceholder', 'dspContent')}"
+                                                 class="#{manageNorticeView.getClassName('', component.clientId)}"
+                                                 value="#{manageNorticeView.selectedRowData.content}"
+                                                 maxlength="#{manageNorticeView.commentCharMax}"
+                                                 rows ="3"
+                                                 label="#{manageNorticeView.getItemCaption('dspContent')}"
+                                                 style="width:90%">
+                                </p:inputTextarea>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <!--期間-->
+                            <p:column styleClass="ui-widget-header" >
+                                #{manageNorticeView.getItemCaption('dspPeriod')}
+                            </p:column>
+                            <p:column style="width: 25%" colspan="3">
+                                <!--開始日-->
+                                <p:calendar
+                                    id="startTimeInput"
+                                    class="#{manageNorticeView.getClassName('calendarClass', component.clientId)}"
+                                    value="#{manageNorticeView.selectedRowData.startTime}"
+                                    placeholder="#{manageNorticeView.getItemCaption('dspStartDate')}  #{manageNorticeView.placeholderVal}"
+                                    locale="ja"
+                                    showOn="both"
+                                    pattern="yyyy/MM/dd"
+                                    label="#{manageNorticeView.getItemCaption('dspStartDate')}"
+                                    style="width:90%">
+                                    <p:ajax event="dateSelect" listener="#{manageNorticeView.fromDateSelect}" />
+                                    <p:ajax event="blur" listener="#{manageNorticeView.fromDateInput}" />
+                                </p:calendar>
+                                &nbsp;&nbsp;<p:outputLabel value="～" />&nbsp;&nbsp;
+                                <!--終了日-->
+                                <p:calendar
+                                    id="endTimeInput"
+                                    class="#{manageNorticeView.getClassName('calendarClass', component.clientId)}"
+                                    value="#{manageNorticeView.selectedRowData.endTime}"
+                                    placeholder="#{manageNorticeView.getItemCaption('dspEndDate')}  #{manageNorticeView.placeholderVal}"
+                                    locale="ja"
+                                    timeZone="JST"
+                                    showOn="both"
+                                    pattern="yyyy/MM/dd"
+                                    label="#{manageNorticeView.getItemCaption('dspEndDate')}"
+                                    style="width:90%">
+                                    <p:ajax event="dateSelect" listener="#{manageNorticeView.toDateSelect}" />
+                                    <p:ajax event="blur" listener="#{manageNorticeView.toDateInput}" />
+                                </p:calendar>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <!--※終了日が空欄の場合は、自動的に「9999/12/31」が設定されます。-->
+                    <h:outputLabel value="#{manageNorticeView.getItemCaption('dspEndDateMemo')}" />
+
+                    <br />
+
+                    <h:panelGroup class="buttonGroup" id="inputButton" style="width: 100%;">
+                        <div align="right">
+                            <!--追加-->
+                            <p:commandButton id="addBtn" value="#{manageNorticeView.getItemCaption('dspBtnAdd')}"
+                                             rendered="#{!manageNorticeView.selected}"
+                                             actionListener="#{manageNorticeView.eventCheckInput(manageIdView.MODE_ADD())}"
+                                             update="inputForm confirmForm:confirmDialog"
+                                             oncomplete="if (args.isSuccess) { PF('confirmation').show();}"
+                                             styleClass="execButton">
+                            </p:commandButton>
+                            <!--更新-->
+                            <p:commandButton id="updateBtn" value="#{manageNorticeView.getItemCaption('dspBtnUpdate')}"
+                                             rendered="#{manageNorticeView.selected}"
+                                             actionListener="#{manageNorticeView.eventCheckInput(manageNorticeView.MODE_UPDATE())}"
+                                             update="inputForm confirmForm:confirmDialog"
+                                             oncomplete="if (args.isSuccess) { PF('confirmation').show();}"
+                                             styleClass="execButton">
+                            </p:commandButton>
+                            <!--削除-->
+                            <p:commandButton id="deleteBtn" value="#{manageNorticeView.getItemCaption('dspBtnDelete')}"
+                                             rendered="#{manageNorticeView.selected}"
+                                             actionListener="#{manageNorticeView.eventCheckInput(manageNorticeView.MODE_DELETE())}"
+                                             update="inputForm confirmForm:confirmDialog"
+                                             oncomplete="if (args.isSuccess) { PF('confirmation').show();}"
+                                             styleClass="execButton">
+                            </p:commandButton>
+
+                            <p:remoteCommand name="submitRC" id="eventExec"
+                                             update="dispForm inputGrid inputButton messages"
+                                             actionListener="#{manageNorticeView.eventExec()}"
+                                             oncomplete="PF('confirmation').hide();">
+                            </p:remoteCommand>
+                        </div>
+                    </h:panelGroup>
+
+                    <p:outputPanel>
+                        <p:messages id="messages" showDetail="true"  autoUpdate="true" closable="true"/>
+                    </p:outputPanel>
+
+                    <h:panelGroup class="buttonGroup">
+                        <!--管理者メニューに戻る-->
+                        <p:commandButton action="manage"
+                                         value="#{manageNorticeView.getItemCaption('dspBtnReturnManage')}" immediate="true" styleClass="backButton" />
+                    </h:panelGroup>
+                </h:form>
+
+                <h:form id="confirmForm">
+                    <!--お知らせ-->
+                    <p:confirmDialog id="confirmDialog" global="true"
+                                     header="#{manageNorticeView.getItemCaption('title')}"
+                                     severity="alert"
+                                     widgetVar="confirmation">
+                        <f:facet name="message" >
+                            #{manageNorticeView.confirmMessage}
+                        </f:facet>
+
+                        <!--はい-->
+                        <p:commandButton value="#{manageNorticeView.getItemCaption('dspBtnYes')}" onclick="submitRC();" ajax="false" />
+                        <!--いいえ-->
+                        <p:commandButton value="#{manageNorticeView.getItemCaption('dspBtnNo')}" onclick="PF('confirmation').hide();" type="button" ajax="false" />
+                    </p:confirmDialog>
+                </h:form>
+            </p:panel>
+        </ui:define>
+    </ui:composition>
+
+</html>

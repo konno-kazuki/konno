@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="ja"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="WEB-INF/jsf/template.xhtml">
+        <ui:param name="dspTarget" value="manage" />
+
+        <ui:define name="title">
+            <!--管理者メニュー-->
+            #{manageView.getItemCaption('title')}
+        </ui:define>
+
+        <ui:define name="content">
+            <p:dataGrid id="manage" var="menu" value="#{manageView.manageLst}" columns="2" layout="grid" styleClass="menuGrid">
+                <p:commandLink action="#{manageView.forward(menu.target)}" immediate="true" tabindex="-1" rendered="#{!empty menu.target}" style="text-decoration: none;">
+                    <p:panel styleClass="box #{menu.style}">
+                        <f:facet name="header">
+                            <h:outputText value="#{menu.name}" />
+                        </f:facet>
+                        <div style="text-align: center">
+                            <h:outputText value="#{menu.comment}" style="white-space: pre-line" />
+                        </div>
+                        <div>
+                            <p:commandButton action="#{manageView.forward(menu.target)}" value="#{menu.button}" style="width: 100%;"/>
+                        </div>
+                    </p:panel>
+                </p:commandLink>
+            </p:dataGrid>
+        </ui:define>
+    </ui:composition>
+</html>
+
