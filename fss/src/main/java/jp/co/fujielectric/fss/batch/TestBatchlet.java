@@ -7,7 +7,7 @@ import javax.inject.Named;
 @Named
 @Dependent
 public class TestBatchlet implements Batchlet {
-    // コンストラクタ（CDIのために必ず必要）
+    // コンストラクタ（CDIのために必ず必要）test
     public TestBatchlet() {}
 
     @Override
