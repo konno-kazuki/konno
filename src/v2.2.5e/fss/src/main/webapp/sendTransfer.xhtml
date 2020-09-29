@@ -1,0 +1,575 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="ja"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:composition template="WEB-INF/jsf/template.xhtml">
+        <ui:param name="dspTarget" value="sendTransfer" />
+
+        <ui:define name="title">
+            <!--システム名-->
+            #{sendTransferView.getItemCaption('title')}
+        </ui:define>
+
+        <ui:define name="content">
+
+            <style type="text/css">
+                /*FileUploadのプログレスキャンセルボタン非表示用*/
+                .ui-fileupload-cancel{
+                    display: none;
+                }
+
+                /*クリックイベント無効化用*/
+                .clickDisable{
+                    pointer-events: none;
+                }
+
+            </style>
+
+            <h:outputScript library="javascript" name="sendCommon.js" />
+            <h:outputScript library="javascript" name="fileDragDropTabView.js" />
+
+            <script>
+                /*<![CDATA[*/
+
+                var disableLst = [];
+                var uploadingCnt = 0;
+                var flgUploadStart = false;
+                var onClickLst = new Array();
+
+                /**
+                 * 画面内のボタン、リンクを無効化する
+                 * @returns なし
+                 */
+                function setElmDisabled()
+                {
+                    disableLst = [];
+                    onClickLst = new Array();
+
+                    //CommandLink をリスト変数に退避
+                    var elements = document.getElementsByClassName("ui-commandlink");
+                    for (var i = 0; i < elements.length; i++) {
+                        disableLst.push(elements[i]);
+                    }
+
+                    //ボタン をリスト変数に退避
+                    var btns = document.getElementsByClassName("ui-button");
+                    for (var i = 0; i < btns.length; i++) {
+                        disableLst.push(btns[i]);
+                    }
+
+                    //メニューをリスト変数に退避
+                    var menus = document.getElementsByClassName("ui-menu");
+                    for (var i = 0; i < menus.length; i++) {
+                        disableLst.push(menus[i]);
+                    }
+
+                    //                    var fssLnks = document.getElementsByClassName("fssLink");
+                    //                    for (var i = 0; i < fssLnks.length; i++) {
+                    //                        if (fssLnks[i].disabled === false) {
+                    ////                            disableLst.push(fssLnks[i]);
+                    //                            $(fssLnks[i]).removeAttr('href');
+                    //                        }
+                    //                    }
+
+                    //ボタン、リンクの無効化
+                    for (var i = 0; i < disableLst.length; i++) {
+                        //pointer-events: none とすることで無効化
+                        $(disableLst[i]).addClass('clickDisable');
+
+                        //ActionListenerの設定は「pointer-events: none」で無効化できないので
+                        //onClickをクリアする（後で戻せるように連想配列に退避）
+                        onClickLst[disableLst[i].id] = $(disableLst[i]).attr('onClick');
+                        $(disableLst[i]).attr('onClick', '');
+                    }
+                }
+
+                /**
+                 * 無効化した画面内のボタン、リンクを元に戻す
+                 * @returns なし
+                 */
+                function setElmEnabled()
+                {
+                    //「pointer-events: none」を解除することで無効化解除
+                    for (var i = 0; i < disableLst.length; i++) {
+                        $(disableLst[i]).removeClass('clickDisable');
+                    }
+                    disableLst = [];
+
+                    //onClickを元に戻す
+                    for (key in onClickLst) {
+                        var elm = document.getElementById(key);
+                        $(elm).attr('onClick', onClickLst[key]);
+                    }
+                }
+                /**
+                 * アップロード開始イベント
+                 * @returns なし
+                 */
+                function onUpldStart()
+                {
+                    //プログレスダイアログを開始
+                    showProgress();
+
+                    //スタートフラグをたてる
+                    flgUploadStart = true;
+
+                    //画面内のボタン、リンクを無効化
+//                    setElmDisabled();
+                }
+
+                /**
+                 * アップロード完了イベント(ファイル単位）
+                 * @returns なし
+                 */
+                function onUpldComplete()
+                {
+                    //アップロード完了チェックを時間差で呼ぶ
+                    setTimeout(onUploadEndChk, 100);
+                }
+
+                /**
+                 * アップロードエラーイベント
+                 * @returns なし
+                 */
+                function onUpldError()
+                {
+                }
+
+                /**
+                 * アップロード完了チェック
+                 * @returns なし
+                 */
+                function onUploadEndChk()
+                {
+                    //アップロードプログレス数を取得
+                    var elements = document.getElementsByClassName("ui-fileupload-preview");
+                    if (flgUploadStart === true) {
+                        //アップロード開始フラグがONのとき（アップロード開始後の最初の完了イベント）
+                        //アップロード数（アップロードプログレス数）を取得する。
+                        flgUploadStart = false;
+                        uploadingCnt = elements.length;
+                    }
+                    //アップロード数をカウントダウン
+                    uploadingCnt = uploadingCnt - 1;
+                    if (uploadingCnt < 1)
+                    {
+                        //全てのアップロードが完了したら
+                        //アップロード完了処理をタイマで呼出す
+                        setTimeout(onUploadEnd, 500);
+                    }
+                }
+
+                /**
+                 * アップロード完了時の処理
+                 * @returns なし
+                 */
+                function onUploadEnd()
+                {
+                    //アップロードエラーファイルがあるか調べる。（プログレス行の有無で）
+                    var errFiles = [];
+                    var elements = document.getElementsByClassName("ui-fileupload-files");
+                    var $trs = $(elements[0]).find('tr');
+                    for (var i = $trs.length - 1; i >= 0; i--) {
+                        //tr中の２つめのelementにファイル名が出力されているので取得する
+                        var $tds = $trs.eq(i).children();
+                        var errFileName = $tds.eq(1).text();
+                        errFiles.push(errFileName);
+                    }
+
+//                    //画面内のボタン、リンクを活性化
+//                    setElmEnabled();
+
+                    //アップロード結果に応じた画面更新処理
+                    if (errFiles.length > 0) {
+                        //--------------
+                        //エラーファイルあり
+                        //--------------
+                        //エラーファイルの各プログレス行のキャンセルボタンを強制的にClickする。
+                        $elms = $('.ui-fileupload-cancel');
+                        for (var i = $elms.length - 1; i >= 0; i--) {
+                            $elms.eq(i).click();
+                        }
+
+                        //プログレスダイアログを終了
+                        hideProgress();
+
+                        //エラーメッセージ表示＆画面更新（エラーファイル名をカンマ区切りで連結して渡す）
+                        addUpldFileErrCmd([{name: "errFileName", value: errFiles.join(',')}]);
+                    } else {
+                        //--------------
+                        //エラーファイルなし
+                        //--------------
+
+                        //プログレスダイアログを終了
+                        hideProgress();
+
+                        //画面更新
+                        upldCompleted();
+                    }
+
+                }
+                /*]]>*/
+            </script>
+
+            <p:panel styleClass="full box">
+
+                <h:form id="dispForm">
+                    <p:tabView id="tabViewSend">
+                        <!--タブ：送信先情報-->
+                        <p:tab id="tabSendInfo" title="#{sendTransferView.getItemCaption('dspSendToInfo')}" >
+
+                            <br />
+                            <p:commandButton id="dmy" style='position: absolute;z-index:1;width:0px; height: 0px;' /><!--Enter押下時の値保持に必要-->
+                            <p:panelGrid id="mailGrid" style="width: 100%;position: relative;z-index:2" >
+                                <p:row>
+                                    <!--送信先情報-->
+                                    <p:column styleClass="ui-widget-header" style="width: 150px" >
+                                        #{sendTransferView.getItemCaption('dspSendToInfo')}
+                                    </p:column>
+                                    <p:column>
+                                        <p:remoteCommand name="originalSwitch" actionListener="#{sendTransferView.deleteAllMailToAction()}" update="mailToList" />
+                                        <p:selectOneRadio id="destination" value="#{sendTransferView.destination}" layout="custom" onchange="originalSwitch()"
+                                                          rendered="#{commonBean.isUserTypeInternalFlg()}">
+                                            <f:selectItem itemValue="#{sendTransferView.DESTINATION_OTHER}" itemLabel="#{sendTransferView.getItemCaption('dspInputDestination')}" />
+                                            <f:selectItem itemValue="#{sendTransferView.DESTINATION_OWN}" itemLabel="#{sendTransferView.getItemCaption('dspSendOwn')}" />
+                                        </p:selectOneRadio>
+                                        <h:panelGrid columns="2" rendered="#{commonBean.isUserTypeInternalFlg()}">
+                                            <p:radioButton id="rdo1" for="destination" itemIndex="0" />
+                                            <p:outputLabel for="rdo1" value="#{sendTransferView.getItemCaption('dspInputDestination')}" />
+                                        </h:panelGrid>
+
+                                        <p:dataList  id="mailToList" value="#{sendTransferView.mailToList}" rowIndexVar="rowIndex" var="mailTo" type="ordered">
+                                            <!--メールアドレス-->
+                                            <p:autoComplete id="mailToInput" class="#{sendTransferView.getMailClassName(mailTo)}"
+                                                            value="#{mailTo.address}"
+                                                            completeMethod="#{sendTransferView.autoCompleteAddress}"
+                                                            maxlength="#{sendTransferView.addressMailCharMax}"
+                                                            style="width:40%;"
+                                                            inputStyle="width:97%;"
+                                                            placeholder="#{sendTransferView.getItemCaption('dspMailToAddressPlaceholder')}"
+                                                            disabled="#{!sendTransferView.loginFlg}"
+                                                            required="false">
+                                                <p:ajax event="itemSelect" update="mailToInput" />
+                                                <p:ajax event="change" process="mailToInput" />
+                                            </p:autoComplete>
+
+                                            <!--送信先名称（任意入力）-->
+                                            <p:autoComplete id="mailToName"
+                                                            value="#{mailTo.personal}"
+                                                            completeMethod="#{sendTransferView.autoCompletePersonalName}"
+                                                            maxlength="#{sendTransferView.addressNameCharMax}"
+                                                            style="width:40%; "
+                                                            inputStyle="width:97%;"
+                                                            placeholder="#{sendTransferView.getItemCaption('dspMailToNamePlaceholder')}"
+                                                            disabled="#{!sendTransferView.loginFlg}">
+                                                <p:ajax event="itemSelect" update="mailToName" />
+                                                <p:ajax event="change" process="mailToName" />
+                                            </p:autoComplete>
+                                            <!--削除-->
+                                            <p:commandButton id="btnMailToDel" icon="ui-icon-close"
+                                                             alt="#{sendTransferView.getItemCaption('dspBtnDelete')}"
+                                                             style="width:22px;height: 22px;vertical-align: middle;margin-left: 5px"
+                                                             actionListener="#{sendTransferView.deleteMailToAction(mailTo)}"
+                                                             update="mailToList" rendered="#{sendTransferView.loginFlg}"
+                                                             immediate="true" />
+                                            <!--追加-->
+                                            <p:commandButton id="btnMailToAdd" icon="ui-icon-plus"
+                                                             alt="#{sendTransferView.getItemCaption('dspBtnAdd')}"
+                                                             style="width:22px;height: 22px;vertical-align: middle;margin-left: 5px"
+                                                             actionListener="#{sendTransferView.addMailToAction(mailTo)}"
+                                                             update="mailToList" rendered="#{sendTransferView.loginFlg}"
+                                                             immediate="true" />
+                                        </p:dataList>
+                                        <h:panelGrid columns="2" rendered="#{commonBean.isUserTypeInternalFlg()}">
+                                            <p:radioButton id="rdo2" for="destination" itemIndex="1" />
+                                            <p:outputLabel for="rdo2" value="#{sendTransferView.getItemCaption('dspSendOwn')}" />
+                                        </h:panelGrid>
+                                    </p:column>
+                                </p:row>
+                                <p:row style="height: Auto">
+                                    <!--備考-->
+                                    <p:column styleClass="ui-widget-header" >
+                                        #{sendTransferView.getItemCaption('dspComment')}
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputTextarea value="#{sendTransferView.sendInfo.content}"
+                                                         maxlength="#{sendTransferView.commentCharMax}"
+                                                         rows ="3" style="width: 95%" >
+                                            <p:ajax />
+                                        </p:inputTextarea>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <!--保存期限　pattern="yyyy年MM月dd日 (EEE)"-->
+                                    <p:column styleClass="ui-widget-header" >
+                                        #{sendTransferView.getItemCaption('dspExpirationTime')}
+                                    </p:column>
+                                    <p:column>
+                                        <p:calendar
+                                            id="cal"
+                                            value="#{sendTransferView.sendInfo.expirationTime}"
+                                            locale="ja"
+                                            showOn="both"
+                                            mindate="#{sendTransferView.minDate}"
+                                            maxdate="#{sendTransferView.maxDate}"
+                                            readonlyInput="true"
+                                            pattern="#{sendTransferView.getItemCaption('dspDatePattern')}">
+                                            <f:convertDateTime type="both" dateStyle="full"
+                                                               pattern="#{sendTransferView.getItemCaption('dspDatePattern')}"
+                                                               timeZone="JST" />
+                                            <p:ajax event="dateSelect" update="difDate" />
+                                        </p:calendar>
+                                        <h:outputText id="difDate" value="#{sendTransferView.diffDate}" style="margin-left: 10px" />
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <!--パスワード-->
+                                    <p:column styleClass="ui-widget-header" >#{sendTransferView.getItemCaption('dspPassword')}</p:column>
+                                    <p:column style="vertical-align: middle">
+                                        <!--自動-->
+                                        <p:selectBooleanCheckbox value="#{sendTransferView.sendInfo.passAuto}" itemLabel="#{sendTransferView.getItemCaption('dspPasswordAuto')}" >
+                                            <p:ajax  update="mailGrid" />
+                                        </p:selectBooleanCheckbox>
+                                        <!--（xx文字のﾊﾟｽﾜｰﾄﾞを自動生成します。）-->
+                                        <p:inputText value="#{sendTransferView.getMessageByKey('passwordCharDefault')}"
+                                                     rendered="#{sendTransferView.sendInfo.passAuto}"
+                                                     style="width: 60%; margin-left: 5px; background-color: darkgrey; color: aliceblue;"
+                                                     readonly="true" />
+                                        <!--ﾊﾟｽﾜｰﾄﾞを入力して下さい。-->
+                                        <p:inputText id="passwordInput" value="#{sendTransferView.sendInfo.passWord }"
+                                                     maxlength="#{sendTransferView.passwordCharMax}"
+                                                     rendered="#{!sendTransferView.sendInfo.passAuto}"
+                                                     style="width: 60%; margin-left: 5px;" required="false"
+                                                     class="#{sendTransferView.getClassName(component.clientId)}"
+                                                     placeholder="#{sendTransferView.getItemCaption('dspPasswordPlaceholder')}">
+                                            <p:ajax />
+                                        </p:inputText>
+                                        <!--通知-->
+                                        <p:selectBooleanCheckbox id="passwordNotice"
+                                                                 value="#{sendTransferView.sendInfo.passNotice}"
+                                                                 itemLabel="#{sendTransferView.getItemCaption('dspPasswordNotice')}"
+                                                                 rendered="#{!sendTransferView.sendInfo.passAuto}"
+                                                                 style="margin-left: 5px">
+                                            <p:ajax />
+                                        </p:selectBooleanCheckbox>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+
+                            <br/>
+
+                            <!--選択したファイルをここにドラッグアンドドロップします。-->
+                            <div id="dropArea" dropzone="file" class="fileformDropArea" style="display: none">
+                                #{sendTransferView.getItemCaption('dspFileFormDropArea')}
+                            </div>
+                            <!--ドラッグ＆ドロップでファイルを追加することもできます。-->
+                            <div id="dropAreaNote" class="fileformDropAreaNote" style="margin-right: 200px;" >
+                                #{sendTransferView.getItemCaption('dspDropAreaNote')}
+                            </div>
+                            <!--ファイルトータルサイズ-->
+                            <div class="fileRemainText"  >
+                                <h:outputText id="fileRemain" value="#{sendTransferView.FSizeRemain}" />
+                            </div>
+                            <!--ファイルアップロード-->
+                            <p:fileUpload id="fileUploadArea" value="#{sendTransferView.upldFile}"
+                                          fileUploadListener="#{sendTransferView.handleFileUpload}" mode="advanced" dragDropSupport="true"
+                                          multiple="true" sizeLimit="#{sendTransferView.maxFSize}"
+                                          requiredMessage="REQUIREDMESSAGE" converterMessage="CONVERTERMESSAGE" validatorMessage="VALIDATORMESSAGE"
+                                          invalidSizeMessage="#{sendTransferView.getItemCaption('errFileSizeOver')}"
+                                          skinSimple="true"
+                                          label="#{sendTransferView.getItemCaption('dspFileUploadLabel')}" auto="true"
+                                          style="min-height: 100px;"
+                                          sequential="true"
+                                          oncomplete="onUpldComplete()"
+                                          onstart="onUpldStart()"
+                                          onerror="onUpldError()"
+                                          >
+                                <!--update="fileRemain upldFileTbl mailToList"-->
+                            </p:fileUpload>
+                            <!--fileUploadタイプ(0=form直下,1=inline)-->
+                            <h:inputHidden id="fileUploadAreaType" value="0" />
+
+                            <p:remoteCommand name="addUpldFileErrCmd"  update="fileRemain upldFileTbl messages"
+                                             actionListener="#{sendTransferView.addUpldFileError()}" />
+                            <p:remoteCommand name="upldCompleted"  update="fileRemain upldFileTbl" />
+
+                            <br/>
+
+                            <!--ファイル一覧-->
+                            <p:dataTable id="upldFileTbl" var="ui" value="#{sendTransferView.fileInfoList}" emptyMessage="" resizableColumns="true"
+                                         scrollable="true"  style="max-height: 300px" >
+                                <!--ファイル名-->
+                                <p:column  headerText="#{sendTransferView.getItemCaption('dspFileTableHeaderName')}">
+                                    <img src="#{resource['images/' += ui.fileIcon]}" width="16" height="16" style="vertical-align: middle" />&nbsp;
+                                    <h:outputText value="#{ui.fileName}"/>
+                                    <small>
+                                        <h:outputText
+                                            value="#{ui.errMsg}"
+                                            style="float: right; color: red; vertical-align: middle"
+                                            rendered="#{ui.error}" />
+                                    </small>
+                                </p:column>
+                                <!--サイズ-->
+                                <p:column headerText="#{sendTransferView.getItemCaption('dspFileTableHeaderSize')}" style="width: 130px">
+                                    <div align="right">
+                                        <h:outputText value="#{ui.sizeText}" />
+                                    </div>
+                                </p:column>
+                                <!--削除-->
+                                <p:column headerText="#{sendTransferView.getItemCaption('dspFileTableHeaderDelete')}" style="width: 36px">
+                                    <p:commandButton id="del"
+                                                     icon="ui-icon-trash"
+                                                     update="dispForm:tabViewSend:upldFileTbl dispForm:tabViewSend:fileRemain"
+                                                     action="#{sendTransferView.deleteItemAction(ui)}" >
+                                        <f:setPropertyActionListener value="#{ui}" target="#{sendTransferView.selectedFile}" />
+                                    </p:commandButton>
+                                </p:column>
+                            </p:dataTable>
+
+                            <p:messages id="messages" showDetail="true" autoUpdate="false" closable="true" />
+
+                            <h:outputText value="#{sendTransferView.getItemCaption('dspSendComment')}"
+                                          rendered="#{!sendTransferView.isSectionLgwan() and !sendTransferView.passwordUnlockFlg}"/>
+                            <h:outputText value="#{sendTransferView.getItemCaption('dspSendCommentPwUnlock')}"
+                                          rendered="#{!sendTransferView.isSectionLgwan() and sendTransferView.passwordUnlockFlg}"/>
+
+                            <br/>
+                            <h:panelGroup class="buttonGroup">
+                                <!--ポータルに戻る-->
+                                <p:commandButton id='btnPortal'
+                                                 value="#{sendTransferView.getItemCaption('dspBtnReturnPortal')}"
+                                                 rendered="#{sendTransferView.loginFlg}"
+                                                 styleClass="backButton fss-margin-top"
+                                                 action="#{sendTransferView.getActionRevPortal()}"
+                                                 />
+                                <!--閉じる-->
+                                <p:commandButton id='btnClose'
+                                                 value="#{sendTransferView.getItemCaption('dspBtnClose')}"
+                                                 rendered="#{!sendTransferView.loginFlg}"
+                                                 styleClass="floatButton fss-margin-top"
+                                                 onclick="window.open('about:blank', '_self').close();"
+                                                 />
+                                <!--入力内容を確認する-->
+                                <p:commandButton id='btnExec'
+                                                 value="#{sendTransferView.getItemCaption('dspBtnInputConfirm')}"
+                                                 icon="fa fa-arrow-right" style='float:right;'
+                                                 styleClass="floatButton bigButton fss-margin-top"
+                                                 action="#{sendTransferView.getActionConf()}"
+                                                 oncomplete="chgUpldFileBackground(args)"
+                                                 update="mailToList mailGrid dispForm:tabViewSend:fileUploadArea messages mailApproveList approveGrid"
+                                                 />
+                            </h:panelGroup>
+                        </p:tab>
+                        <!--タブ：承認者情報-->
+                        <p:tab id="tabApproveInfo" title="#{sendTransferView.getItemCaption('dspSendApproveInfo')}"
+                               titleStyle="#{!sendTransferView.approvalsFlg ? 'display : none;' : ''}">
+                            <br />
+                            <p:commandButton id="dmyApproveInfo" style='position: absolute;z-index:1;width:0px; height: 0px;' /><!--Enter押下時の値保持に必要-->
+                            <p:panelGrid id="approveGrid" style="width: 100%;position: relative;z-index:2" >
+                                <p:row>
+                                    <!--承認者情報-->
+                                    <p:column styleClass="ui-widget-header" style="width: 150px" >
+                                        #{sendTransferView.getItemCaption('dspSendApproveInfo')}
+                                    </p:column>
+                                    <p:column>
+                                        <p:dataList id="mailApproveList" value="#{sendTransferView.mailApproveList}" var="mailApprove" type="ordered" >
+                                            <!--承認者メールアドレス-->
+                                            <p:inputText class="#{sendTransferView.getMailApproveClassName(mailApprove)}" id="mailApproveInput"
+                                                         value="#{mailApprove.address}"
+                                                         maxlength="#{sendTransferView.addressMailCharMax}"
+                                                         style="width:40%; "
+                                                         placeholder="#{sendTransferView.getItemCaption('dspMailToAddressPlaceholder')}"
+                                                         disabled="false"
+                                                         required="false">
+                                                <p:ajax event="blur" update=" mailApproveInput" />
+                                            </p:inputText>
+                                            <!--承認者名称（任意入力）-->
+                                            <p:inputText id="mailApproveName" value="#{mailApprove.personal}"
+                                                         maxlength="#{sendTransferView.addressNameCharMax}"
+                                                         style="width:40%; "
+                                                         placeholder="#{sendTransferView.getItemCaption('dspMailToNamePlaceholder')}"
+                                                         disabled="false">
+                                                <p:ajax event="blur" update="mailApproveName" />
+                                            </p:inputText>
+                                            <!--削除-->
+                                            <p:commandButton id="btnMailApproveDel" icon="ui-icon-close"
+                                                             alt="#{sendTransferView.getItemCaption('dspBtnDelete')}"
+                                                             style="width:22px;height: 22px;vertical-align: middle;margin-left: 5px"
+                                                             actionListener="#{sendTransferView.deleteMailApproveAction(mailApprove)}"
+                                                             update="mailApproveList"
+                                                             immediate="true" />
+                                            <!--追加-->
+                                            <p:commandButton id="btnMailApproveAdd" icon="ui-icon-plus"
+                                                             alt="#{sendTransferView.getItemCaption('dspBtnAdd')}"
+                                                             style="width:22px;height: 22px;vertical-align: middle;margin-left: 5px"
+                                                             actionListener="#{sendTransferView.addMailApproveAction(mailApprove)}"
+                                                             update="mailApproveList"
+                                                             immediate="true" />
+                                        </p:dataList>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <!--合議判定-->
+                                    <p:column styleClass="ui-widget-header" style="width: 150px" >
+                                        #{sendTransferView.getItemCaption('dspConsultationJudgment')}
+                                    </p:column>
+                                    <p:column>
+                                        <p:selectOneRadio id="consultationJudgment" value="#{sendTransferView.sendInfo.approvalsRequiredAllFlg}">
+                                            <!--全員が承認したらファイルを送信-->
+                                            <f:selectItem itemLabel="#{sendTransferView.getItemCaption('dspApprovalsRequiredAll')}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+                                                          itemValue="#{sendTransferView.APPROVALS_REQUIRED_ALLFLG_ON}" />
+                                            <!--１人が承認したらファイルを送信-->
+                                            <f:selectItem itemLabel="#{sendTransferView.getItemCaption('dspApprovalsRequiredOne')}"
+                                                          itemValue="#{sendTransferView.APPROVALS_REQUIRED_ALLFLG_OFF}" />
+                                        </p:selectOneRadio>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <!--通信欄-->
+                                    <p:column styleClass="ui-widget-header" style="width: 150px" >
+                                        #{sendTransferView.getItemCaption('dspComment')}
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputTextarea id="approvalsComment"
+                                                         value="#{sendTransferView.sendInfo.approvalsComment}"
+                                                         maxlength="#{sendTransferView.commentCharMax}"
+                                                         class="#{sendTransferView.getClassName(component.clientId)}"
+                                                         rows ="3" style="width: 95%" >
+                                            <p:ajax />
+                                        </p:inputTextarea>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+
+                            <br/>
+                            <h:panelGroup class="buttonGroup">
+                                <!--ポータルに戻る-->
+                                <p:commandButton id='btnPortalApprove'
+                                                 value="#{sendTransferView.getItemCaption('dspBtnReturnPortal')}"
+                                                 rendered="#{sendTransferView.loginFlg}"
+                                                 styleClass="backButton fss-margin-top"
+                                                 action="#{sendTransferView.getActionRevPortal()}"
+                                                 />
+                                <!--閉じる-->
+                                <p:commandButton id='btnCloseApprove'
+                                                 value="#{sendTransferView.getItemCaption('dspBtnClose')}"
+                                                 rendered="#{!sendTransferView.loginFlg}"
+                                                 styleClass="floatButton fss-margin-top"
+                                                 onclick="window.open('about:blank', '_self').close();"
+                                                 />
+                            </h:panelGroup>
+                        </p:tab>
+                    </p:tabView>
+                    <br clear="all" />
+                </h:form>
+            </p:panel>
+
+        </ui:define>
+    </ui:composition>
+
+</html>

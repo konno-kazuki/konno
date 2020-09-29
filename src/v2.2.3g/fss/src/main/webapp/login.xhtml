@@ -1,0 +1,230 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="ja"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="WEB-INF/jsf/template.xhtml">
+        <ui:param name="dspTarget" value="login" />
+        <ui:define name="title">
+            <!--セキュアファイル交換サービス-->
+            #{loginView.getItemCaption('title')}
+        </ui:define>
+
+        <ui:define name="content">
+            <script>
+            /*<![CDATA[*/                
+            function handleError(args){
+                if(!args.authSuccess && !args.sendPwNotice){
+                    PF('dlgPwResetting').hide();
+                    PF('dlgError').show();
+                }
+                if(args.authSuccess && args.sendPwNotice){
+                    PF('dlgPwResetting').hide();
+                    PF('dlgComplete').show();
+                }
+                if(args.authSuccess && !args.sendPwNotice){
+                    PF('dlgPwResetting').hide();
+                }
+            }
+            /*]]>*/
+            </script>
+            <h:form id="loginForm" rendered="#{loginView.hasPermission}">
+                <div style="text-align: center;">
+                    <p:panel style="display: inline-block; width: 40%; min-width: 350px; margin: 30px;" styleClass="box">
+                        <f:facet name="header">
+                            <!--ログイン-->
+                            <h:outputText value="#{loginView.getItemCaption('dspLogin')}" style="text-align: center" />
+                        </f:facet>
+
+                        <p:outputPanel style="margin: 11px;">
+                            <!--ユーザID-->
+                            <h:outputText value="#{loginView.getItemCaption('dspUserId')}" />
+                            <br />
+                            <!--ユーザID-->
+                            <p:inputText id="userId" value="#{loginView.userId}" size="30"
+                                         class="#{loginView.getClassName('form-control', component.clientId)}"
+                                         maxlength="100" 
+                                         required="#{empty param['loginForm:passwordForget']}" 
+                                         label="#{loginView.getItemCaption('dspUserId')}" 
+                                         autocomplete="off"
+                                         style="margin: 5px;" />
+                        </p:outputPanel>
+                        <p:outputPanel style="margin: 11px;">
+                            <!--パスワード-->
+                            <h:outputText value="#{loginView.getItemCaption('dspPassword')}" />
+                            <br />
+                            <!--パスワード-->
+                            <p:password id="password" value="#{loginView.password}" size="30" 
+                                        maxlength="#{loginView.passwordCharMax}" 
+                                        required="#{empty param['loginForm:passwordForget'] and empty param['loginForm:sendMailPwSet']}" 
+                                        label="#{loginView.getItemCaption('dspPassword')}" 
+                                        autocomplete="off"
+                                        style="margin: 5px;" />
+                        </p:outputPanel>
+                        <!--ログイン-->
+                        <p:commandButton id="loginBtn" value="#{loginView.getItemCaption('dspLogin')}" 
+                                         actionListener="#{loginView.login()}"
+                                         action="#{loginView.getActionFunc()}"
+                                         oncomplete="if(args.isWarn) { PF('confirmation').show();}"
+                                         style="margin: 5px; width: 250px;"
+                                         update="confirmDialog"
+                                         styleClass="floatButton" />
+                        <br />
+                        <p:messages id="messages" autoUpdate="true" closable="true" />
+                        <br />
+                        <div style="text-align: right">
+                            <!--パスワードを忘れた方へ-->
+                            <p:commandLink id="passwordForget" value="#{loginView.getItemCaption('dspPwForget')}" 
+                                           update="@form"
+                                           ajax="true"
+                                           process="@form"
+                                           actionListener="#{loginView.checkInputUserId()}"
+                                           oncomplete="if (!args.isError) {PF('dlgPwResetting').show();}"
+                                           style="font-size: small;" />
+                        </div>
+
+
+                        <!-- ログイン時警告ダイアログ ログインロック以外は警告表示後にポータルに移動する  -->
+                        <p:confirmDialog id="confirmDialog" global="true"
+                                         header="#{loginView.getItemCaption('dspLogin')}"
+                                         severity="alert" closable="false"
+                                         widgetVar="confirmation"
+                                         message="#{loginView.warnMsg}"
+                                         >
+                            <!--パスワードを変更する-->
+                            <p:commandButton value="#{loginView.getItemCaption('dspBtnPwChange')}"
+                                             styleClass="execButton" style="margin: 5px;float:right"
+                                             rendered="#{!loginView.loginLockFlg}" immediate="true"
+                                             onclick="PF('confirmation').hide(); submitToSetPasswordRC();" />
+                            <!--トップへ-->
+                            <p:commandButton value="#{loginView.getItemCaption('dspBtnToPortal')}"
+                                             styleClass="backButton" style="margin: 5px;float:left;"
+                                             rendered="#{!loginView.loginLockFlg and !loginView.passwordResetFlg}" immediate="true"
+                                             onclick="PF('confirmation').hide(); submitToTop();" />
+                            <!--OK (ログインロックの場合）-->
+                            <p:commandButton value="#{loginView.getItemCaption('dspBtnClose')}"
+                                             styleClass="execButton" style="margin: 5px;float:center"
+                                             rendered="#{loginView.loginLockFlg}" immediate="true"
+                                             onclick="PF('confirmation').hide();" />
+                        </p:confirmDialog> 
+                        <p:remoteCommand name="submitToTop"
+                                         process="@form" update="@form"
+                                         action="portal" />
+                        <p:remoteCommand name="submitToSetPasswordRC"
+                                         process="@form" update="@form"
+                                         action="userPasswordSet" />
+                    </p:panel>
+                </div>
+                
+                <div onkeypress="if (event.keyCode == 13) return false;">
+                    <p:dialog id="dlgPwResetting" 
+                              widgetVar="dlgPwResetting"
+                              closable="true" 
+                              header="#{loginView.getItemCaption('infDialogTitleAuth')}"
+                              resizable="false" modal="true">
+                        <div style="text-align: center;">
+                            <p:panel style="display: inline-block; width: 650px; margin: 10px 20px 10px 20px; background-color: honeydew; word-wrap: break-word;">
+                                <div style="margin: 0px 10px; text-align: left; font-size: x-large; line-height: 1.5;">
+                                    <pre style="white-space: pre-line; margin-bottom: 0px;">#{loginView.getItemCaption('infDialogTextAuthAbove')}</pre>
+                                    <p:inputText id="mailAddress" 
+                                                 value="#{loginView.mailAddress}" size="30" 
+                                                 maxlength="#{loginView.addressMailCharMax}" 
+                                                 style="margin-top: 5px; margin-right: 5px; margin-bottom: 5px; margin-left: 35px;" 
+                                                 onkeypress="if (event.keyCode == 13) return false;" >       
+                                    </p:inputText>
+                                    <pre style="white-space: pre-line; margin-top: 0px;">#{loginView.getItemCaption('infDialogTextAuthBelow')}</pre>
+                                </div>
+                            </p:panel>
+                            <br/>
+
+                            <!--戻る-->
+                            <p:commandButton 
+                                value="#{loginView.getItemCaption('dspBtnReturn')}"
+                                onclick="PF('dlgPwResetting').hide();"
+                                style="width: 100px; margin-left: 20px; float: left;"
+                                type="button" styleClass="ui-confirmdialog-no backButton middleButton fss-margin-top" />
+
+                            <!--次へ-->
+                            <p:commandButton id="sendMailPwSet"
+                                             value="#{loginView.getItemCaption('dspBtnNext')}"
+                                             action="#{loginView.execAction()}"
+                                             update="dlgPwResetting dlgComplete dlgError"
+                                             oncomplete="handleError(args)"
+                                             style="width: 200px; margin-right: 20px; margin-bottom: 20px; float: right;"
+                                             styleClass="ui-confirmdialog-yes execButton bigButton fss-margin-top" />
+                        </div>
+                    </p:dialog>
+                    <p:dialog id="dlgComplete" 
+                              widgetVar="dlgComplete" 
+                              header="#{loginView.getItemCaption('infDialogTitleSendPwNotice')}" 
+                              closable="false" resizable="false" modal="true" >
+                        <div style="text-align: center;">
+                            <p:panel style="display: inline-block; width: 600px; margin: 10px 20px 30px 20px; background-color: honeydew; word-wrap: break-word;" >
+                                <div style="margin: 0px 10px; text-align: left; font-size: x-large; line-height: 1.5;">
+                                    <pre style="white-space: pre-line;">#{loginView.getItemCaption('infDialogTextSendPwNotice')}</pre>
+                                </div>
+                            </p:panel>
+                        </div>
+                    </p:dialog>
+                    <p:dialog id="dlgError" 
+                              widgetVar="dlgError" 
+                              header="#{loginView.getItemCaption('infDialogTitleAuthFailed')}" 
+                              closable="true" resizable="false" modal="true">
+                        <div style="text-align: center;">
+                            <p:panel style="display: inline-block; width: 650px; margin: 10px 20px 10px 20px; background-color: lightPink; word-wrap: break-word;" >
+                                <div style="margin: 0px 10px; text-align: left; font-size: x-large; line-height: 1.5;">
+                                    <pre style="white-space: pre-line;">#{loginView.getItemCaption('infDialogTextAuthFailed')}</pre>
+                                </div>
+                            </p:panel>
+                            <br/>
+
+                            <!--戻る-->
+                            <p:commandButton 
+                                value="#{loginView.getItemCaption('dspBtnReturn')}"
+                                onclick="PF('dlgError').hide();"
+                                style="width: 100px; margin-left: 20px; float: left;"
+                                type="button" styleClass="ui-confirmdialog-no backButton middleButton fss-margin-top" />
+                        </div>
+                    </p:dialog>
+                </div>
+            </h:form>
+            
+            <br />
+            <h:form id="norticeForm" rendered="#{loginView.hasPermission}">
+            <div style="text-align: center;">
+                <ui:repeat value="#{norticeView.norticeList}" var="nortice">
+                    <p:commandLink value="#{nortice.subject}" oncomplete="PF('dialog').show()" update="dialog" style="color: red">
+                        <f:setPropertyActionListener value="#{nortice}" target="#{norticeView.selectedNortice}" />
+                    </p:commandLink>
+                    <br />
+                </ui:repeat>
+            </div>
+            </h:form>
+            <br />
+
+            <p:dialog
+                id="dialog"
+                widgetVar="dialog"
+                appendTo="@(body)"
+                header="#{norticeView.selectedNortice.subject}"
+                width="640"
+                height="480"
+                showEffect="fade"
+                hideEffect="fade"
+                modal="true"
+                closeOnEscape="true">
+                <h:form>
+                    <h:outputText id="detail" value="#{norticeView.selectedNortice.content}" style="white-space: pre" />
+                    <!--閉じる-->
+                    <p:commandButton value="#{loginView.getItemCaption('dspBtnClose')}" 
+                                     onclick="PF('dialog').hide();" 
+                                     type="button" 
+                                     style="position: absolute; right: 15px; bottom: 15px" />
+                </h:form>
+            </p:dialog>
+        </ui:define>
+    </ui:composition>
+</html>

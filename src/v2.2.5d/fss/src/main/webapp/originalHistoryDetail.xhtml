@@ -1,0 +1,225 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="ja"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:composition template="WEB-INF/jsf/template.xhtml">
+        <ui:param name="dspTarget" value="originalHistoryDetail" />
+
+        <ui:define name="title">
+            <!--原本履歴詳細-->
+            #{originalHistoryDetailView.getItemCaption('title')}
+        </ui:define>
+        <ui:define name="content">
+
+            <p:panel styleClass="full box">
+
+                <p:panelGrid id="detailTable"
+                             style="width: 100%; table-layout: fixed; word-wrap: break-word; overflow-wrap: break-word;" >
+                    <p:row>
+                        <!--登録日時-->
+                        <p:column styleClass="ui-widget-header history-header" >
+                            #{originalHistoryDetailView.getItemCaption('dspRegistDateTime')}
+                        </p:column>
+                        <p:column >
+                            <h:outputText value="#{originalHistoryDetailView.injectHistoryBean.registDateLongAddTime}" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <!--送信日時-->
+                        <p:column styleClass="ui-widget-header history-header" >
+                            #{originalHistoryDetailView.getItemCaption('dspSendDateTime')}
+                        </p:column>
+                        <p:column >
+                            <h:outputText value="#{originalHistoryDetailView.injectHistoryBean.sendDateLongAddTime}" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <!--保存期限-->
+                        <p:column styleClass="ui-widget-header history-header" >
+                            #{originalHistoryDetailView.getItemCaption('dspExpirationDate')}
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{originalHistoryDetailView.injectHistoryBean.expirationDateLong} まで" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <!--状況-->
+                        <p:column styleClass="ui-widget-header history-header" >
+                            #{originalHistoryDetailView.getItemCaption('dspStatus')}
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{originalHistoryDetailView.injectHistoryBean.statusText}" style="#{originalHistoryDetailView.readyDownload ? '' : 'color : red'}" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row style="border: none">
+                        <p:column style="border: none" />
+                        <p:column style="border: none" />
+                    </p:row>
+                    <p:row style="border: none">
+                        <p:column style="border: none" />
+                        <p:column style="border: none" />
+                    </p:row>
+
+                    <p:row>
+                        <!--送信元-->
+                        <p:column styleClass="ui-widget-header history-header" >
+                            #{originalHistoryDetailView.getItemCaption('dspReceiveSender')}
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{originalHistoryDetailView.injectHistoryBean.sender}" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <!--件名-->
+                        <p:column styleClass="ui-widget-header history-header" >
+                            #{originalHistoryDetailView.getItemCaption('dspSubject')}
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{originalHistoryDetailView.injectHistoryBean.subject}" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <!--備考-->
+                        <p:column styleClass="ui-widget-header history-header" >
+                            #{originalHistoryDetailView.getItemCaption('dspComment')}
+                        </p:column>
+                        <p:column>
+                            <div id="id_content"
+                                 class="#{originalHistoryDetailView.injectHistoryBean.contentLineDisp ? 'textOverflow' : 'history-content'} inlineLeft"
+                                 style="width: calc(100% - 30px);">
+                                <h:outputText value="#{originalHistoryDetailView.injectHistoryBean.content}" />
+                            </div>
+                            <div class="inlineRight" style="text-align: center; width: 30px">
+                                <p:commandButton id="id_contentBtn"
+                                                 class="mailBodyBtn"
+                                                 icon="#{originalHistoryDetailView.injectHistoryBean.contentLineDisp ? 'ui-icon-circle-triangle-s' : 'ui-icon-circle-triangle-n'}"
+                                                 actionListener="#{originalHistoryDetailView.chgContent}"
+                                                 update="detailTable" >
+                                </p:commandButton>
+                            </div>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+
+                <br/>
+                <br/>
+
+                <h:form id="dispFileForm">
+                    <p:remoteCommand name="onCheck" update="downloadButton" />
+                    <p:dataTable id="fileInfoTable"
+                                 var="fileInfo"
+                                 value="#{originalHistoryDetailView.fileInfoList}"
+                                 selection="#{originalHistoryDetailView.selectedRowData}"
+                                 selectionMode="single"
+                                 rendered="#{!originalHistoryDetailView.statusCancel}"
+                                 rowKey="#{fileInfo.fileId}"
+                                 disabledSelection="#{!fileInfo.fileNormal}"
+                                 rowStyleClass="#{fileInfo.fileNormal ? null : (fileInfo.expirationFlg ? 'disabledRow' : (fileInfo.sanitizeFlg ? 'disabledRowRed' : 'disabledRow'))}" >
+
+                        <p:ajax event="rowSelect" listener="#{originalHistoryDetailView.onRowSelect}" update="dispFileForm" />
+
+                        <p:column style="width: 80px; text-align: center">
+                            <f:facet name="header">
+                                <!--全選択-->
+                                <p:commandLink
+                                    update="dispFileForm"
+                                    actionListener="#{originalHistoryDetailView.allCheck}"
+                                    value="#{originalHistoryDetailView.getItemCaption('dspBtnAllSelect')}" />
+                            </f:facet>
+                            <p:selectBooleanCheckbox
+                                value="#{fileInfo.checked}"
+                                disabled="#{!fileInfo.fileNormal}"
+                                rendered="#{fileInfo.fileNormal}"
+                                onchange="onCheck()" />
+                        </p:column>
+
+                        <!--ファイル名-->
+                        <p:column headerText="#{originalHistoryDetailView.getItemCaption('dspFileTableHeaderName')}"  style="width: 60%">
+                            <h:graphicImage name="#{'images/' += fileInfo.statusIcon}" style="width: 16px; height: 16px; margin: 0px 2px;" rendered="#{originalHistoryDetailView.includeErrFile}" />
+                            <h:graphicImage name="#{'images/' += fileInfo.fileIcon}" style="width: 16px; height: 16px; margin: 0px 2px;" />
+                            <h:outputText value="#{fileInfo.fileName}" style="#{fileInfo.fileNormal ? null : 'text-decoration: line-through'}" />
+                            <h:outputText
+                                value="#{fileInfo.fileMessage}"
+                                style="float: right; color: red; font-size: smaller"
+                                rendered="#{!fileInfo.fileNormal}" />
+                        </p:column>
+
+                        <!--サイズ-->
+                        <p:column headerText="#{originalHistoryDetailView.getItemCaption('dspFileTableHeaderSize')}">
+                            <div style="text-align: right; #{fileInfo.fileNormal ? null : 'text-decoration: line-through'}">
+                                <h:outputText value="#{fileInfo.sizeText}" />
+                            </div>
+                        </p:column>
+
+                    </p:dataTable>
+                    <!--※保存期限が経過すると、自動的に削除されます。-->
+                    <span>#{originalHistoryDetailView.getItemCaption('dspAutoDeleteMemo')}</span>
+
+                    <br/>
+                    <p:outputPanel>
+                        <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
+                    </p:outputPanel>
+
+                    <br/>
+                    <h:panelGroup>
+                        <!--メール原本取得-->
+                        <p:commandLink
+                            id="downloadEml"
+                            value="#{originalHistoryDetailView.getItemCaption('dspMailDownload')}"
+                            ajax="true"
+                            update="dispFileForm"
+                            action="#{originalHistoryDetailView.eventDownloadEml()}"
+                            oncomplete="if (!args.downloadFailed) document.getElementById('dispFileForm:dlButton').click();"
+                            style="float: right; margin: 5px;">
+                        </p:commandLink>
+                    </h:panelGroup>
+                    <br clear="all" />
+                    <h:panelGroup class="buttonGroup">
+                        <!--原本履歴一覧に戻る-->
+                        <p:commandButton
+                            id="modoruBtn"
+                            value="#{originalHistoryDetailView.getItemCaption('dspBtnReturnOriginalHistory')}"
+                            action="originalHistory"
+                            rendered="#{originalHistoryDetailView.loginFlg}"
+                            actionListener="#{originalHistoryDetailView.actBack}"
+                            styleClass="backButton fss-margin-top" />
+                        <!--閉じる-->
+                        <p:commandButton
+                            value="#{originalHistoryDetailView.getItemCaption('dspBtnClose')}"
+                            rendered="#{!originalHistoryDetailView.loginFlg}"
+                            onclick="window.open('about:blank', '_self').close();"
+                            styleClass="floatButton fss-margin-top" />
+
+                        <!--ダウンロード(非表示)-->
+                        <p:commandButton id="dlButton" value="#{originalHistoryDetailView.getItemCaption('dspBtnDownloadHidden')}" ajax="false" style="visibility: hidden">
+                            <p:fileDownload value="#{originalHistoryDetailView.file}" />
+                        </p:commandButton>
+                        <!--ダウンロード-->
+                        <p:commandButton
+                            id="downloadButton"
+                            value="#{originalHistoryDetailView.getItemCaption('dspBtnDownload')}"
+                            ajax="true"
+                            action="#{originalHistoryDetailView.eventDownload()}"
+                            disabled="#{!originalHistoryDetailView.selectedFiles}"
+                            icon="fa fa-cloud-download"
+                            update="dispFileForm"
+                            oncomplete="if (!args.downloadFailed) document.getElementById('dispFileForm:dlButton').click();"
+                            style="float: right;" styleClass="execButton bigButton fss-margin-top">
+                        </p:commandButton>
+                    </h:panelGroup>
+                    <br clear="all" />
+                </h:form>
+            </p:panel>
+
+        </ui:define>
+    </ui:composition>
+
+</html>

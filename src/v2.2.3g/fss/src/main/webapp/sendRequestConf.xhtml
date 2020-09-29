@@ -1,0 +1,163 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="ja"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:composition template="WEB-INF/jsf/template.xhtml">
+        <ui:param name="dspTarget" value="sendRequestConf" />
+
+        <ui:define name="title">
+            <!--システム名-->
+            #{sendRequestView.getItemCaption('title')}
+        </ui:define>
+
+        <ui:define name="content">
+
+            <p:panel styleClass="full box">
+
+                <h:form id="dispForm">
+
+                    <br />
+
+                    <!--以下の内容でファイル送信します。-->
+                    <h:outputText value="#{sendRequestView.getItemCaption('dspSendConfMemo')}" />
+
+                    <p:panelGrid style="width: 100%" >
+                        <p:row>
+                            <!--送信依頼先-->
+                            <p:column styleClass="ui-widget-header" style="width:270px">
+                                #{sendRequestView.getItemCaption('dspSendMailTo')}
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{sendRequestView.getAddressText(sendRequestView.sendMailTo)}" style="width: 60%"  />
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <br/>
+
+                    <p:panelGrid id="mailGrid" style="width: 100%" >
+                        <p:row>
+                            <!--受取り先-->
+                            <p:column styleClass="ui-widget-header" style="width: 200px" >
+                                #{sendRequestView.getItemCaption('dspReceiveMailTo')}
+                            </p:column>
+                            <p:column>
+                                <p:dataList id="mailToList" value="#{sendRequestView.mailToList}" var="mailTo" type="ordered" styleClass="mailToList">
+                                    <h:outputText id="mailToOutput" value="#{sendRequestView.getAddressText(mailTo)}"  />
+                                </p:dataList>
+                            </p:column>
+                        </p:row>
+                        <p:row style="height: Auto">
+                            <!--依頼内容-->
+                            <p:column styleClass="ui-widget-header" >
+                                #{sendRequestView.getItemCaption('dspContent')}
+                            </p:column>
+                            <p:column>
+                                <p:inputTextarea value="#{sendRequestView.sendRequestInfo.content}" 
+                                                 style="width: 95%; border-width: 0px;" readonly="true" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <!--有効期限-->
+                            <p:column styleClass="ui-widget-header" >
+                                #{sendRequestView.getItemCaption('dspExpirationTime')}
+                            </p:column>
+                            <p:column>
+                                <!--pattern="yyyy年MM月dd日 (EEE)"-->
+                                <p:calendar style=";"
+                                            id="calButton2" styleClass="fssCalendarNonBorder"
+                                            value="#{sendRequestView.sendRequestInfo.expirationTime}"
+                                            readonly="true"
+                                            showOn="none"
+                                            pattern="#{sendRequestView.getItemCaption('dspDatePattern')}" />
+                                <h:outputText id="difDate" value="#{sendRequestView.diffDate}" style="margin-left: 10px" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <!--パスワード-->
+                            <p:column styleClass="ui-widget-header" >
+                                #{sendRequestView.getItemCaption('dspPassword')}
+                            </p:column>
+                            <p:column style="vertical-align: middle">
+                                <!--自動-->
+                                <h:outputText value="#{sendRequestView.getItemCaption('dspPasswordAuto')}"
+                                              rendered="#{sendRequestView.sendRequestInfo.passAuto}" />
+                                <!--（xx文字のパスワードを自動生成します。）-->
+                                <h:outputText value="#{sendRequestView.getMessageByKey('passwordCharDefault')}"
+                                              rendered="#{sendRequestView.sendRequestInfo.passAuto}"
+                                              style="width: 60%; margin-left: 5px;"  />
+                                <p:inputText id="passwordInput" value="#{sendRequestView.sendRequestInfo.passWord }"
+                                             rendered="#{!sendRequestView.sendRequestInfo.passAuto}"
+                                             style="width: 60%; margin-left: 5px;"
+                                             readonly="true" />
+                                <!--通知：有り or 通知：無し-->
+                                <h:outputText value="#{sendRequestView.getDspPasswordNotice()}" style="margin-left: 5px"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+
+                    <p:outputPanel>
+                        <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
+                    </p:outputPanel>
+                    <br />
+
+                    <h:panelGroup class="buttonGroup">
+                        <!--戻る-->
+                        <p:commandButton id="btnSendRequestRev"
+                                         action="#{sendRequestView.getActionRev()}"
+                                         value="#{sendRequestView.getItemCaption('dspBtnReturn')}"
+                                         styleClass="backButton fss-margin-top" />
+                        <!--ファイル送信依頼を送る-->
+                        <p:commandButton
+                            id="btnSendRequest"
+                            value="#{sendRequestView.getItemCaption('dspBtnSendRequest')}"
+                            icon="fa fa-cloud-upload"
+                            action ="#{sendRequestView.getActionPortal()}"
+                            actionListener="#{sendRequestView.execAction}"
+                            style='float:right'
+                            update="dispForm:messages"
+                            styleClass="execButton bigButton fss-margin-top">
+                            <!--ファイル送信依頼　message="よろしいですか？"-->
+                            <p:confirm header="#{sendRequestView.getItemCaption('infDialogTitle')}" />
+                        </p:commandButton>
+                    </h:panelGroup>
+
+                    <p:confirmDialog id="confirmation" global="true" showEffect="fade" hideEffect="fade" styleClass="fssConfirmDialog" >
+                        <div style="text-align: center;">
+                            
+                            <p:panel style="display: inline-block; width: 650px; margin: 10px 20px 10px 20px; background-color: honeydew; word-wrap: break-word;" >
+                                <div style="margin: 0px 10px; text-align: left; font-size: x-large; line-height: 1.5;">
+                                    <pre>#{sendRequestView.getItemCaption('infDialogText')}</pre>
+                                </div>
+                            </p:panel>
+                            <br/>
+                            
+                            <!--戻る-->
+                            <p:commandButton id="btnConfNo"
+                                             style="width: 100px; margin-left: 20px; float: left;"
+                                             value="#{sendRequestView.getItemCaption('dspBtnReturn')}"
+                                             type="button" styleClass="ui-confirmdialog-no backButton middleButton fss-margin-top" />
+                            
+                            <!--次へ-->
+                            <p:commandButton id="btnConfYes"
+                                             style="width: 200px; margin-right: 20px; margin-bottom: 20px; float: right;"
+                                             value="#{sendRequestView.getItemCaption('dspBtnNext')}"
+                                             type="button" styleClass="ui-confirmdialog-yes execButton bigButton fss-margin-top" />
+
+                            </div>
+                        
+                        
+                    </p:confirmDialog>
+
+                    <br clear="all" />
+                </h:form>
+
+            </p:panel>
+
+        </ui:define>
+    </ui:composition>
+
+</html>

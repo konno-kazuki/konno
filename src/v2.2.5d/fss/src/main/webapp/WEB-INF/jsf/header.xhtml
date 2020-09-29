@@ -1,0 +1,108 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="ja"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:composition>
+        <h:form id="headerForm" >
+            <div class="ui-grid title" style="min-height: 3em">
+                <div class="ui-grid-col-6" style="width:auto;" >
+                    <h2 style="margin: 0.3em 10px">
+                        <img src="#{headerView.getDefineImage('RegionIcon')}" width="auto" height="auto"
+                             style="vertical-align: bottom;max-width:32px; max-height: 32px; " ></img>
+                        #{headerView.headerTitle}
+                    </h2>
+                </div>
+
+                <div class="ui-grid-col-6" style="width:auto; float:right;">
+                    <div style="float: right; text-align: center;">
+                        <p:commandLink tabindex="-1" style="float: left; margin: 0.5em 10px"
+                                       rendered="#{(commonBean.loginFlg) and (!headerView.headerEmpty)}">
+                            <p:commandButton action="#{headerView.forward(headerView.header.target)}"
+                                             value="#{headerView.header.button}" styleClass="helpButton" />
+                            <f:param name="msgId" value="#{dspId}"  />
+                        </p:commandLink>
+
+                        <ui:remove><!--
+                        <p:lightBox id="helpLinkLightBox" iframe="true" style="float: left; margin: 0.5em 10px" >
+                            <h:outputLink class="fssLink" id="helpLink" value="#{headerView.getHelpURL(dspTarget)}" title="操作方法" tabindex="-1" >
+                                <p:commandButton value="操作方法" icon="iconQuestion" styleClass="helpButton" />
+                                <f:param name="msgId" value="#{dspId}" />
+                                <f:param name="funcId" value="#{headerView.funcId}" />
+                            </h:outputLink>
+                        </p:lightBox>
+
+                        <p:lightBox iframe="true" style="float: left; margin: 0.5em 10px">
+                            <h:outputLink class="fssLink" value="#{headerView.getFaqURL(dspTarget)}" title="よくある質問" tabindex="-1">
+                                <p:commandButton value="よくある質問" icon="iconFAQ" styleClass="helpButton" />
+                                <f:param name="msgId" value="#{dspId}" />
+                                <f:param name="funcId" value="#{headerView.funcId}" />
+                            </h:outputLink>
+                        </p:lightBox>
+                        --></ui:remove>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+
+        <hr style="margin: 0px" />
+
+        <h:form id="formTop"  class="formTop">
+            <div class="ui-grid location">
+                <div class="ui-grid-col-6">
+                    <p:outputPanel style="margin: 0.5em 20px">
+                        <ui:repeat var="func" varStatus="stat" id="id_funcList"
+                                   value="#{headerView.getFuncList(dspTarget)}"
+                                   rendered="#{(commonBean.loginFlg)}">
+                            <h:outputText id="idSp_#{stat.index}"
+                                          value="&gt;"
+                                          style="margin: 0px 10px"
+                                          rendered="#{(commonBean.loginFlg) and stat.index > 0}"/>
+
+                            <h:outputText id="idTx_#{stat.index}"
+                                          value="#{func.funcName}"
+                                          rendered="#{(commonBean.loginFlg) and !func.linkFlg}"/>
+
+                            <p:commandLink id="idLink_#{stat.index}"
+                                           rendered="#{(commonBean.loginFlg) and func.linkFlg}"
+                                           action="#{headerView.forward(func.target)}" >
+                                #{func.funcName}
+                            </p:commandLink>
+                        </ui:repeat>
+                    </p:outputPanel>
+                </div>
+
+                <div class="ui-grid-col-6">
+                    <p:outputPanel style="text-align: right; margin: 0.5em 20px;">
+                        <p:commandLink id="loginNameLink" rendered="#{commonBean.loginFlg}">
+                            <img src="#{resource['images/common/icon_forward.png']}" />
+                            <h:outputText value="#{commonBean.loginName}" style="color: black" />
+                        </p:commandLink>
+                        <p:menu overlay="true" trigger="loginNameLink" my="left top" at="left bottom">
+                            <p:submenu label="個人設定">
+                                <p:menuitem value="パスワード変更" action="userPasswordSet" />
+                            </p:submenu>
+                        </p:menu>
+                        <p:commandLink ignoreAutoUpdate="true" actionListener="#{authLogic.logout()}" rendered="#{commonBean.loginFlg}"
+                                       onsuccess="PF('logoutDlg').show();"  style="padding-left: 20px; ">
+                            <img src="#{resource['images/common/icon_logout.png']}" width="20" height="20" style="vertical-align: middle" />
+                            <h:outputText value="ログアウト" style="color: black" />
+                        </p:commandLink>
+                    </p:outputPanel>
+                </div>
+            </div>
+
+            <p:dialog header="ログアウトしました。" widgetVar="logoutDlg" modal="true" closable="false" resizable="false" draggable="false">
+                <hr />
+                <div style="text-align: center"><p:button value="ログインページへ" href="./" target="_top" /></div>
+            </p:dialog>
+
+        </h:form>
+
+        <hr style="margin: 0px" />
+    </ui:composition>
+</html>

@@ -1,0 +1,175 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="ja"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="WEB-INF/jsf/template.xhtml">
+        <ui:param name="dspTarget" value="manageDefine" />
+
+        <ui:define name="title">
+            <!--固有設定-->
+            #{manageDefineView.getItemCaption('title')}
+        </ui:define>
+
+        <ui:define name="content">
+
+            <p:panel styleClass="full box">
+                <h:form id="dispForm">
+
+                    <p:dataTable
+                        id="defineTable"
+                        var="define"
+                        value="#{manageDefineView.manageDefineList}"
+                        first="#{manageDefineView.dataTable.first}"
+                        rows="#{manageDefineView.dataTable.rows}"
+                        paginator="#{manageDefineView.dataTable.paginator}"
+                        paginatorTemplate="#{manageDefineView.dataTable.paginatorTemplate}"
+                        rowsPerPageTemplate="#{manageDefineView.dataTable.rowsPerPageTemplate}"
+                        selectionMode="#{manageDefineView.dataTable.selectionMode}"
+                        selection="#{manageDefineView.selectedRowDataTmp}"
+                        rowStyleClass="#{define.rowStyle}"
+                        rowKey="#{define.itemKey}" >
+
+                        <p:ajax event="rowSelect"
+                                listener="#{manageDefineView.eventRowSelect()}"
+                                update="inputForm dispForm" />
+                        <p:ajax event="page" listener="#{manageDefineView.eventPage}" update="inputForm"/>
+
+                        <p:column style="width: 5%; text-align: center">
+                            <p:selectBooleanCheckbox
+                                value="#{define.checked}" />
+                        </p:column>
+                        <!--定義名称-->
+                        <p:column headerText="#{manageDefineView.getItemCaption('dspDefineItemKey')}" style="width: 25%;">
+                            <h:outputText class="pointer-events" value="#{define.itemKey}" />
+                        </p:column>
+                        <!--定義値-->
+                        <p:column headerText="#{manageDefineView.getItemCaption('dspDefineItemValue')}">
+                            <h:outputText class="pointer-events" value="#{define.itemValue}" />
+                        </p:column>
+
+                    </p:dataTable>
+                </h:form>
+
+                <br/>
+
+                <h:form id="inputForm">
+
+                    <p:panelGrid id="inputGrid" style="width: 100%;" >
+                        <p:row styleClass="ui-widget-header">
+                            <p:column styleClass="ui-widget-header"
+                                      style="text-align: left;  vertical-align: top; width: 100%; height: 32px;"
+                                      colspan="4">
+                                &nbsp;&nbsp;
+                                <!--選択解除-->
+                                <p:commandButton id="selectClearBtn" value="#{manageDefineView.getItemCaption('dspBtnSelectClear')}"
+                                                 rendered="#{manageDefineView.selected}"
+                                                 actionListener="#{manageDefineView.eventSelectClear()}"
+                                                 update="inputForm dispForm"
+                                                 style='float:right' >
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 5%; text-align: center">
+                                &nbsp;
+                            </p:column>
+                            <p:column style="width: 25%" >
+                                <!--定義名称を入力して下さい。-->
+                                <p:inputText id="itemKeyInput"
+                                             class="#{manageDefineView.getClassName('form-control', component.clientId)}"
+                                             placeholder="#{manageDefineView.getItemCaption('dspPlaceholder', 'dspDefineItemKey')}"
+                                             rendered="#{!manageDefineView.selected}"
+                                             value="#{manageDefineView.selectedRowData.itemKey}"
+                                             maxlength="#{manageDefineView.maxlenDefineName}"
+                                             style="width:90%">
+                                </p:inputText>
+                                <p:outputLabel rendered="#{manageDefineView.selected}"
+                                               value="#{manageDefineView.selectedRowData.itemKey}">
+                                </p:outputLabel>
+                            </p:column>
+                            <p:column >
+                                <!--定義値を入力して下さい。-->
+                                <p:inputText id="itemValueInput"
+                                             class="#{manageDefineView.getClassName('form-control', component.clientId)}"
+                                             placeholder="#{manageDefineView.getItemCaption('dspPlaceholder', 'dspDefineItemValue')}"
+                                             value="#{manageDefineView.selectedRowData.itemValue}"
+                                             maxlength="#{manageDefineView.maxlenDefineValue}"
+                                             style="width:90%">
+                                </p:inputText>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+
+                    <h:panelGroup class="buttonGroup" id="inputButton" style="width: 100%;">
+                        <div align="right">
+                            <!--追加-->
+                            <p:commandButton id="addBtn" value="#{manageDefineView.getItemCaption('dspBtnAdd')}"
+                                             rendered="#{!manageDefineView.selected}"
+                                             actionListener="#{manageDefineView.eventCheckInput(manageDefineView.MODE_ADD())}"
+                                             update="inputForm confirmForm:confirmDialog"
+                                             oncomplete="if (args.isSuccess) { PF('confirmation').show();}"
+                                             styleClass="execButton">
+                            </p:commandButton>
+                            <!--更新-->
+                            <p:commandButton id="updateBtn" value="#{manageDefineView.getItemCaption('dspBtnUpdate')}"
+                                             rendered="#{manageDefineView.selected}"
+                                             actionListener="#{manageDefineView.eventCheckInput(manageDefineView.MODE_UPDATE())}"
+                                             update="inputForm confirmForm:confirmDialog"
+                                             oncomplete="if (args.isSuccess) { PF('confirmation').show();}"
+                                             styleClass="execButton">
+                            </p:commandButton>
+                            <!--削除-->
+                            <p:commandButton id="deleteBtn" value="#{manageDefineView.getItemCaption('dspBtnDelete')}"
+                                             rendered="#{manageDefineView.selected}"
+                                             actionListener="#{manageDefineView.eventCheckInput(manageDefineView.MODE_DELETE())}"
+                                             update="inputForm confirmForm:confirmDialog"
+                                             oncomplete="if (args.isSuccess) { PF('confirmation').show();}"
+                                             styleClass="execButton">
+                            </p:commandButton>
+
+                            <p:remoteCommand name="submitRC" id="eventExec"
+                                             update="dispForm inputGrid inputButton messages"
+                                             actionListener="#{manageDefineView.eventExec()}"
+                                             oncomplete="PF('confirmation').hide();">
+
+                            </p:remoteCommand>
+                        </div>
+                    </h:panelGroup>
+
+                    <p:outputPanel>
+                        <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
+                    </p:outputPanel>
+
+                    <h:panelGroup class="buttonGroup">
+                        <!--管理者メニューに戻る-->
+                        <p:commandButton action="manage"
+                                         value="#{manageDefineView.getItemCaption('dspBtnReturnManage')}" immediate="true" styleClass="backButton" />
+                    </h:panelGroup>
+                </h:form>
+
+                <h:form id="confirmForm">
+                    <!--固有設定-->
+                    <p:confirmDialog id="confirmDialog" global="true"
+                                     header="#{manageDefineView.getItemCaption('title')}"
+                                     severity="alert"
+                                     widgetVar="confirmation">
+                        <f:facet name="message" >
+                            #{manageDefineView.confirmMessage}
+                        </f:facet>
+
+                        <!--はい-->
+                        <p:commandButton value="#{manageDefineView.getItemCaption('dspBtnYes')}" onclick="submitRC();" ajax="false" />
+                        <!--いいえ-->
+                        <p:commandButton value="#{manageDefineView.getItemCaption('dspBtnNo')}" onclick="PF('confirmation').hide();" type="button" ajax="false" />
+                    </p:confirmDialog>
+                </h:form>
+            </p:panel>
+        </ui:define>
+    </ui:composition>
+
+</html>
