@@ -1,0 +1,130 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="ja"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="WEB-INF/jsf/template.xhtml">
+        <ui:param name="dspTarget" value="portal" />
+        <ui:define name="title">
+            <!--無害化サービスポータル-->
+            #{portalView.getItemCaption('title')}
+        </ui:define>
+
+        <ui:define name="content">
+            <div style="width: 50%; float: left;">
+                <p:panel styleClass="box" style="border: none; margin: 0.5em 2em; width: 80%; min-width: 400px; float: right;" rendered="#{!empty portalView.menu1.target}">
+                    <div style="font-size: x-large; font-weight: bold; margin: 0.2em;">
+                        <h:outputText value="#{portalView.menu1.name}" />
+                    </div>
+                    <p:commandLink action="#{portalView.forward(portalView.menu1.target)}" immediate="true" tabindex="-1" style="text-decoration: none;">
+                        <p:panel styleClass="box" style="text-align: center; margin: 0em 1em">
+                            <h:outputText value="#{portalView.menu1.comment}" style="white-space: pre-line" />
+                            <br />
+                            <h:graphicImage name="#{'images/' += portalView.menu1.icon}" rendered="#{!empty portalView.menu1.icon}" />
+                            <br />
+                            <p:commandButton action="#{portalView.forward(portalView.menu1.target)}" value="#{portalView.menu1.button}"
+                                             styleClass="bigButton" style="width: 100%;" />
+                        </p:panel>
+                    </p:commandLink>
+                </p:panel>
+
+                <p:panel styleClass="box" style="border: none; margin:  0.5em 2em; width: 80%; min-width: 400px; float: right;" rendered="#{!empty portalView.menu8.target}">
+                    <div style="font-size: x-large; font-weight: bold; margin: 0.2em;">
+                        <h:outputText value="#{portalView.menu8.name}" />
+                    </div>
+                    <div style="text-align: center">
+                        <h:outputText value="#{portalView.menu8.comment}" style="white-space: pre-line" />
+                        <p:commandButton action="#{portalView.forward(portalView.menu8.target)}" value="#{portalView.menu8.button}" immediate="true"
+                                         styleClass="floatButton" style="width: 90%" />
+                    </div>
+                </p:panel>
+            </div>
+            <div style="width: 50%; float: left;">
+                <p:panel styleClass="box" style="border: none; margin:  0.5em 2em; width: 80%; min-width: 400px; float: left;" rendered="#{!empty portalView.menu2.target}">
+                    <div style="font-size: x-large; font-weight: bold; margin: 0.2em;">
+                        <h:outputText value="#{portalView.menu2.name}" />
+                    </div>
+                    <p:commandLink action="#{portalView.forward(portalView.menu2.target)}" immediate="true" tabindex="-1" style="text-decoration: none;">
+                        <p:panel styleClass="box" style="text-align: center; margin: 0em 1em">
+                            <h:outputText value="#{portalView.menu2.comment}" style="white-space: pre-line" />
+                            <br />
+                            <h:graphicImage name="#{'images/' += portalView.menu2.icon}" rendered="#{!empty portalView.menu2.icon}" />
+                            <br />
+                            <p:commandButton action="#{portalView.forward(portalView.menu2.target)}" value="#{portalView.menu2.button}"
+                                             styleClass="middleButton" style="width: 100%;"/>
+                        </p:panel>
+                    </p:commandLink>
+                </p:panel>
+                <p:panel styleClass="box" style="border: none; margin:  0.5em 2em; width: 80%; min-width: 400px; float: left;" rendered="#{!empty portalView.menu3.target}">
+                    <div style="font-size: x-large; font-weight: bold; margin: 0.2em;">
+                        <h:outputText value="#{portalView.menu3.name}" />
+                    </div>
+                    <div style="text-align: center">
+                        <h:outputText value="#{portalView.menu3.comment}" style="white-space: pre-line" />
+                        <p:commandButton action="#{portalView.forward(portalView.menu3.target)}" value="#{portalView.menu3.button}" immediate="true"
+                                         styleClass="floatButton" style="width: 90%" />
+                    </div>
+                </p:panel>
+                <p:panel styleClass="box" style="border: none; margin:  0.5em 2em; width: 80%; min-width: 400px; float: left;"
+                         rendered="#{!empty portalView.menu4.target or !empty portalView.menu5.target or !empty portalView.menu6.target or !empty portalView.menu7.target}">
+                    <div style="font-size: x-large; font-weight: bold; margin: 0.2em;">
+                        <h:outputText value="#{portalView.menu4.name}" />
+                    </div>
+                    <table style="width: 100%; text-align: left;" border="0" cellspacing="0" >
+                        <tr>
+                            <td style="width:50%; text-align:left;">
+                                <p:commandButton action="#{portalView.forward(portalView.menu4.target)}" value="#{portalView.menu4.button}" immediate="true" rendered="#{!empty portalView.menu4.target}"
+                                         styleClass="floatButton" style="margin-left:10%; width: 82%;" />
+                            </td>
+                            <td style="width:50%; text-align:right;">
+                                <p:commandButton action="#{portalView.forward(portalView.menu5.target)}" value="#{portalView.menu5.button}" immediate="true" rendered="#{!empty portalView.menu5.target}"
+                                         styleClass="floatButton" style="margin-right:10%; width: 82%;" />
+                            </td>
+                        </tr>
+                        <tr style="height:0.6em;"/>
+                        <tr>
+                            <td style="width:50%; text-align:left;">
+                                <p:commandButton action="#{portalView.forward(portalView.menu6.target)}" value="#{portalView.menu6.button}" immediate="true" rendered="#{!empty portalView.menu6.target}"
+                                         styleClass="floatButton" style="margin-left:10%; width: 82%;" />
+                            </td>
+                            <td style="width:50%; text-align:right;">
+                                <p:commandButton action="#{portalView.forward(portalView.menu7.target)}" value="#{portalView.menu7.button}" immediate="true" rendered="#{!empty portalView.menu7.target}"
+                                         styleClass="floatButton" style="margin-right:10%; width: 82%;" />
+                            </td>
+                        </tr>
+                    </table>
+                </p:panel>
+                <p:panel styleClass="box" style="border: none; margin:  0.5em 2em; width: 80%; min-width: 400px; float: left;" rendered="#{!empty portalView.menu9.target}">
+                    <div style="font-size: x-large; font-weight: bold; margin: 0.2em;">
+                        <h:outputText value="#{portalView.menu9.name}" />
+                    </div>
+                    <div style="text-align: center">
+                        <h:outputText value="#{portalView.menu9.comment}" style="white-space: pre-line" />
+                        <p:button href="#{portalView.forward(portalView.menu9.target)}" value="#{portalView.menu9.button}" target="_blank"
+                                         styleClass="floatButton" style="width: 90%" />
+                    </div>
+                </p:panel>
+
+                <!--共有ファイルフォルダのファイルダウンロード-->
+                <ui:remove>
+                    <p:panel styleClass="box" style="border: none; margin:  0.5em 2em; width: 80%; min-width: 400px; float: left;" rendered="#{!empty portalView.commonDir.target}">
+                        <div style="font-size: x-large; font-weight: bold; margin: 0.2em;">
+                            <h:outputText value="#{portalView.commonDir.name}" />
+                        </div>
+                        <div style="text-align: center">
+                            <h:outputText value="#{portalView.commonDir.comment}" style="white-space: pre-line" />
+                            <p:commandButton action="#{portalView.forward(portalView.commonDir.target)}" value="#{portalView.commonDir.button}" immediate="true"
+                                             styleClass="floatButton" style="width: 90%" />
+                        </div>
+                    </p:panel>
+                </ui:remove>
+
+            </div>
+            <br clear="all" />
+        </ui:define>
+    </ui:composition>
+</html>
+

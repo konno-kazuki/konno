@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="ja"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="WEB-INF/jsf/template.xhtml">
+        <ui:param name="dspTarget" value="mailLostHistory" />
+
+        <ui:define name="title">
+            <!--メールロスト一覧-->
+            #{mailLostHistoryView.getItemCaption('title')}
+        </ui:define>
+
+        <ui:define name="content">
+
+            <h:outputScript library="javascript" name="sendCommon.js" />
+
+            <p:panel styleClass="full box">
+                <h:form id="dispForm">
+
+                    <p:dataTable
+                        id="mailLostTable"
+                        var="mailLost"
+                        value="#{mailLostHistoryView.mailLostHistoryList}"
+                        first="#{mailLostHistoryView.dataTable.first}"
+                        rows="#{mailLostHistoryView.dataTable.rows}"
+                        paginator="#{mailLostHistoryView.dataTable.paginator}"
+                        paginatorTemplate="#{mailLostHistoryView.dataTable.paginatorTemplate}"
+                        rowsPerPageTemplate="#{mailLostHistoryView.dataTable.rowsPerPageTemplate}"
+                        selectionMode="#{mailLostHistoryView.dataTable.selectionMode}"
+                        rowKey="#{mailLost.id}">
+
+                        <!--処理日時-->
+                        <p:column id="updateDate" headerText="#{mailLostHistoryView.getItemCaption('dspProcessingDateTime')}" style="width: 100px">
+                            <h:outputText class="pointer-events" value="#{mailLost.updateDate}" >
+                                <!--yyyy年MM月dd日 HH:mm-->
+                                <f:convertDateTime type="date" dateStyle="full" pattern="MM/dd HH:mm" timeZone="JST" />
+                            </h:outputText>
+                        </p:column>                        
+                        <!--差出人-->
+                        <p:column class="textOverflow" headerText="#{mailLostHistoryView.getItemCaption('dspAddressFrom')}" style="width: 100%">
+                            <h:outputText class="pointer-events" value="#{mailLost.sendMailAddress}" />
+                        </p:column>
+                        <!--宛先-->
+                        <p:column class="textOverflow" headerText="#{mailLostHistoryView.getItemCaption('dspAddressTo')}" style="width: 100%;">
+                            <h:outputText class="pointer-events" value="#{mailLost.receiveAddresses}" />
+                        </p:column>
+                        <!--件名-->
+                        <p:column class="textOverflow" headerText="#{mailLostHistoryView.getItemCaption('dspSubject')}" style="width: 100%;">
+                            <h:outputText class="pointer-events" value="#{mailLost.subject}" />
+                        </p:column>
+                        <!--送信日時-->
+                        <p:column id="sendTime" headerText="#{mailLostHistoryView.getItemCaption('dspSendDateTime')}" style="width: 100px">
+                            <h:outputText class="pointer-events" value="#{mailLost.sendTime}" >
+                                <!--yyyy年MM月dd日（EEE）-->
+                                <f:convertDateTime type="date" dateStyle="full" pattern="MM/dd HH:mm" timeZone="JST"/>
+                            </h:outputText>
+                        </p:column>
+
+                    </p:dataTable>
+                    <br/>
+                    <h:panelGroup class="buttonGroup">
+                        <!--管理者メニューに戻る-->
+                        <p:commandButton action="manage"
+                                         value="#{mailLostHistoryView.getItemCaption('dspBtnReturnManage')}" immediate="true" styleClass="backButton" />
+                    </h:panelGroup>
+                </h:form>
+            </p:panel>
+        </ui:define>
+    </ui:composition>
+
+</html>
