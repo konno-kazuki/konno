@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="ja"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="WEB-INF/jsf/template.xhtml">
+        <ui:param name="dspTarget" value="manageLog" />
+
+        <ui:define name="title">
+            <!--ログ出力-->
+            #{manageLogView.getItemCaption('title')}
+        </ui:define>
+
+        <ui:define name="content">
+            <h:outputScript library="javascript" name="sendCommon.js" />
+
+            <p:panel styleClass="full box">
+                <h:form id="inputForm">
+                    <br />
+                    <p:commandButton id="dmy" value="" style='position: absolute;z-index:1;width:0px; height: 0px;' />
+                    <p:panelGrid id="mailGrid" style="width: 100%; table-layout: fixed; position: relative;z-index:2" >
+                        <p:row>
+                            <!--出力ログ-->
+                            <p:column styleClass="ui-widget-header" style="width: 200px" >
+                                #{manageLogView.getItemCaption('dspLogType')}
+                            </p:column>
+                            <p:column>
+                                <!--出力ログ-->
+                                <p:selectOneMenu id="selectLog" 
+                                                 label="#{manageLogView.getItemCaption('dspLogType')}"
+                                                 class="#{manageLogView.getClassName('form-control', component.clientId)}"
+                                                 value="#{manageLogView.selectLog}" >
+                                    <f:selectItem itemLabel="" itemValue="" />
+                                    <f:selectItems value="#{manageLogView.logTypeList}" var="type"
+                                                   itemValue="#{type.itemKey}" itemLabel="#{type.itemValue}" />
+                                    <p:ajax event="change"
+                                            listener="#{manageLogView.eventChangeOutType()}"
+                                            update="@form">
+                                    </p:ajax>
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <!--対象期間-->
+                            <p:column styleClass="ui-widget-header" >
+                                #{manageLogView.getItemCaption('dspTargetPeriod')}
+                            </p:column>
+                            <p:column>
+                                <!--対象期間(開始日)-->
+                                <p:calendar id="calFrom"
+                                            class="#{manageLogView.getClassName('form-control', component.clientId)}"
+                                            value="#{manageLogView.dateFrom}"
+                                            locale="ja" showOn="both"
+                                            placeholder="#{manageLogView.placeholderVal}"
+                                            readonlyInput="false"
+                                            navigator="false"
+                                            label="#{manageLogView.getItemCaption('dspTargetPeriodStart')}"
+                                            pattern="#{manageLogView.dateInputPattern}">
+                                    <p:ajax event="dateSelect" update="messages" />
+                                    <p:ajax event="blur" update="messages" />
+                                </p:calendar>
+                                &nbsp;～&nbsp;
+                                <!--対象期間(終了日)-->
+                                <p:calendar id="calTo"
+                                            class="#{manageLogView.getClassName('calendarClass', component.clientId)}"
+                                            value="#{manageLogView.dateTo}"
+                                            locale="ja" showOn="both"
+                                            placeholder="#{manageLogView.placeholderVal}"
+                                            readonlyInput="false"
+                                            navigator="false"
+                                            label="#{manageLogView.getItemCaption('dspTargetPeriodEnd')}"
+                                            pattern="#{manageLogView.dateInputPattern}">
+                                    <p:ajax event="dateSelect" update="messages" />
+                                    <p:ajax event="blur" update="messages" />
+                                </p:calendar>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+
+                    <p:outputPanel>
+                        <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
+                    </p:outputPanel>
+
+                    <h:panelGroup class="buttonGroup">
+                        <!--管理者メニューに戻る-->
+                        <p:commandButton action="manage" 
+                                         value="#{manageLogView.getItemCaption('dspBtnReturnManage')}" immediate="true" styleClass="backButton" />
+
+                        <!--ダウンロード(非表示)-->
+                        <p:commandButton id="dlButton" value="#{manageLogView.getItemCaption('dspBtnDownloadHidden')}" ajax="false" style="visibility: hidden">
+                            <p:fileDownload value="#{manageLogView.downloadFile}" />
+                        </p:commandButton>
+                        <!--ＣＳＶ出力-->
+                        <p:commandButton value="#{manageLogView.getItemCaption('dspBtnCsvOutput')}" icon="fa fa-arrow-right"
+                                         ajax="true"
+                                         actionListener="#{manageLogView.eventCsvOutput()}"
+                                         oncomplete="if (args.isDownLoad) document.getElementById('inputForm:dlButton').click();"
+                                         update="@form"
+                                         style='float:right' >
+                        </p:commandButton>
+
+<!--                        <p:commandButton
+                                         id="downloadButton" value="ダウンロードする"
+                                         ajax="false"
+                                         icon="fa fa-cloud-download"
+                                         rendered="#{manageLogView.downLoad}"
+                                         style="float: right;" styleClass="execButton" >
+                            <p:fileDownload value="#{manageLogView.downloadFile}" />
+                        </p:commandButton>-->
+                    </h:panelGroup>
+                </h:form>
+            </p:panel>
+        </ui:define>
+    </ui:composition>
+
+</html>

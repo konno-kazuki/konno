@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="ja"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:composition template="WEB-INF/jsf/template.xhtml">
+        <ui:param name="dspTarget" value="manageLogFile" />
+
+        <!--ログファイル出力-->
+        <ui:define name="title">
+            #{manageLogFileView.getItemCaption("title")}
+        </ui:define>
+
+        <ui:define name="content">
+
+            <p:panel styleClass="full box">
+                <h:form id="dispFileForm">
+
+                    <h:outputText value="#{manageLogFileView.getItemCaption('dspTableGuide')}" />
+
+                    <p:dataTable id="fileInfoTable"
+                                 var="fileInfo"
+                                 value="#{manageLogFileView.fileInfoList}"
+                                 first="#{manageLogFileView.historyDataTable.first}"
+                                 rows="#{manageLogFileView.historyDataTable.rows}"
+                                 paginator="#{manageLogFileView.historyDataTable.paginator}"
+                                 paginatorTemplate="#{manageLogFileView.historyDataTable.paginatorTemplate}"
+                                 rowsPerPageTemplate="#{manageLogFileView.historyDataTable.rowsPerPageTemplate}"
+                                 selectionMode="#{manageLogFileView.historyDataTable.selectionMode}"
+                                 selection="#{manageLogFileView.selectedRowData}"
+                                 rowKey="#{fileInfo.fileName}">
+
+                        <p:ajax event="rowSelect" listener="#{manageLogFileView.onRowSelect}" update="dispFileForm"
+                            oncomplete="if (!args.downloadFailed) document.getElementById('dispFileForm:dlButton').click();"/>
+
+                        <!--ファイル名-->
+                        <p:column headerText="#{manageLogFileView.getItemCaption('dspFileTableHeaderName')}">
+                            <h:graphicImage name="#{'images/' += fileInfo.fileIcon}" style="width: 16px; height: 16px; margin: 0px 2px;" />
+                            <h:outputText value="#{fileInfo.fileName}" />
+                        </p:column>
+
+                        <!--サイズ-->
+                        <p:column headerText="#{manageLogFileView.getItemCaption('dspFileTableHeaderSize')}" style="width: 20%;">
+                            <div style="text-align: right">
+                                <h:outputText value="#{fileInfo.sizeText}" />
+                            </div>
+                        </p:column>
+
+                    </p:dataTable>
+
+                    <br/>
+                    <p:outputPanel>
+                        <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
+                    </p:outputPanel>
+
+                    <br/>
+                    <h:panelGroup class="buttonGroup">
+                        <!--管理者メニューに戻る-->
+                        <p:commandButton action="manage"
+                                         value="#{manageIdView.getItemCaption('dspBtnReturnManage')}" immediate="true" styleClass="backButton" />
+                        <!--ダウンロード(非表示)-->
+                        <p:commandButton id="dlButton" value="#{manageLogFileView.getItemCaption('dspBtnDownloadHidden')}" ajax="false" style="visibility: hidden">
+                            <p:fileDownload value="#{manageLogFileView.file}" />
+                        </p:commandButton>
+                    </h:panelGroup>
+
+                </h:form>
+            </p:panel>
+        </ui:define>
+    </ui:composition>
+
+</html>
