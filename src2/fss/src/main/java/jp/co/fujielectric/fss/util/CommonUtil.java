@@ -1,5 +1,6 @@
 package jp.co.fujielectric.fss.util;
 
+import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import javax.mail.internet.AddressException;
@@ -438,7 +439,26 @@ public class CommonUtil {
      * @return 
      */
     private static String getFolder(FolderKbn kbn, String subDir, String dateDir, String idDir){
-        Path p = Paths.get(getFolderSetting(kbn));
+        //settings.propertiesの指定キーに登録されているフォルダを取得
+        String folder = CommonUtil.getFolderSetting(kbn);
+        //サブフォルダも含むフォルダを取得して返す
+        return getFolderWithSubFolder(folder, kbn, subDir, dateDir, idDir);
+    }
+    
+    /**
+     * 指定区分のサブフォルダを含むフォルダパスの取得
+     * @param folder    ルートフォルダ
+     * @param kbn       フォルダ区分
+     * @param subDir    サブフォルダ文字列（サーブレットコード等）
+     * @param dateDir   日付サブフォルダ文字列
+     * @param idDir     IDサブフォルダ文字列
+     * @return 
+     */
+    private static String getFolderWithSubFolder(String rootFolder, FolderKbn kbn, String subDir, String dateDir, String idDir){
+        if(StringUtils.isEmpty(rootFolder))
+            return "";
+        rootFolder = rootFolder.trim();
+        Path p = Paths.get(rootFolder);
         //サブフォルダ１（サーブレットコート等）
         if(kbn.flgUseSubFolder && !StringUtils.isEmpty(subDir)){
             p = Paths.get(p.toString(), subDir);
@@ -454,6 +474,74 @@ public class CommonUtil {
         return p.toString();
     }
 
+    //【フォルダ切替え対応（v2.2.6a 2020.8.19) 】
+    /**
+     * 指定区分のサブフォルダを含むフォルダ（IDサブフォルダ、またはメール格納フォルダ）を返す
+     * 指定区分の通常キーで取得したフォルダで存在しない場合は+"_old"キーで登録されているフォルダで存在すればそれを返す
+     * 【キーの例】
+     * ＜通常キー＞ senddir, decryptdir, receivedir
+     * ＜+"_old"キー＞ senddir_old, decryptdir_old, receivedir_old
+     * _oldキーには複数のフォルダをカンマ区切りで登録可能。
+     * 　例：「senddir_old=/var/fss/send1/,/var/fss/send2/」
+     * 
+     * @param kbn       フォルダ区分
+     * @param subDir    サブフォルダ文字列（サーブレットコード等）
+     * @param dateDir   日付サブフォルダ文字列
+     * @param idDir     IDサブフォルダ文字列
+     * @param flgMail   対象フォルダがメールのフォルダかどうか
+     * @return          flgMail=True:メールのフォルダ（日付フォルダ）、False:IDサブフォルダ
+     */
+    private static String getExistFolder(FolderKbn kbn, String subDir, String dateDir, String id, boolean flgMail){
+        String retFolder = "";
+        try {
+            String mailFName = (StringUtils.isEmpty(id) ? "" : id) + ".eml";    //メールファイル名
+            
+            //+"_old"キープロパティの設定値
+            String folderOld = CommonUtil.getSetting(kbn.key + "_old");     // +"_old"キーでプロパティ設定値を取得
+            
+            //①通常のプロパティキーでサブフォルダも含めたフォルダを取得
+            String idSubFolder = getFolder(kbn, subDir, dateDir, id);       //IDサブフォルダ
+            String mailFolder = getFolder(kbn, subDir, dateDir, null);      //メールのフォルダ（日付フォルダ）
+            retFolder = (flgMail ? mailFolder : idSubFolder);             //戻り値（対象がメールかどうかで切替え）
+            
+            //+"_old"キープロパティの設定値がなければ、ファイルやフォルダの存在に関係なく通常プロパティキーで取得したフォルダを返す （既存処理と同じ）
+            if(StringUtils.isBlank(folderOld)){
+                return retFolder;
+            }
+            //①通常のプロパティキーで存在確認
+            //IDサブフォルダまたはメールファイルが存在するかチェック
+            //※IDサブフォルダとメールファイルの両方をチェックするのは、
+            //  添付ファイルの入ったIDサブフォルダとメールファイル（日付フォルダ内）のルートのフォルダが別々にならないように。
+            //  IDサブフォルダが無いフォルダ区分（例えばmailフォルダ）はIDサブフォルダの存在チェックはしない。
+            File mailFile = new File(mailFolder, mailFName);        //メールファイル（日付フォルダ内）
+            if((kbn.flgUseIdFolder && new File(idSubFolder).exists()) || mailFile.exists()){
+                //存在していればそのフォルダを返す
+                return retFolder;
+            }
+        
+            //②通常のプロパティキーで取得したフォルダ（ファイル）が存在しない場合、キー+"_old"で登録されているフォルダで存在チェックする
+            //xxx_oldプロパティにカンマ区切りで複数のフォルダが登録されていることを想定して分割する
+            String[] folderOldAry = folderOld.split(",", 0);
+            for (String folder : folderOldAry) {
+                //+"_old"プロパティキーでサブフォルダも含めたフォルダを取得
+                idSubFolder = getFolderWithSubFolder(folder, kbn, subDir, dateDir, id);     //IDサブフォルダ
+                mailFolder = getFolderWithSubFolder(folder, kbn, subDir, dateDir, null);    //メールのファイル（日付フォルダ内）
+                //IDサブフォルダまたはメールファイルが存在するかチェック
+                mailFile = new File(mailFolder, mailFName);        //メールファイル（日付フォルダ内）
+                if((kbn.flgUseIdFolder && new File(idSubFolder).exists()) || mailFile.exists()){
+                    //存在していればそのフォルダを返す
+                    retFolder = (flgMail ? mailFolder : idSubFolder);             //戻り値
+                    return retFolder;
+                }
+            }
+        } catch (Exception e) {
+            // +"_old"プロパティでの処理で例外発生の場合は①通常のプロパティキーで取得したフォルダを返す
+            return retFolder;
+        }
+        //③ ①②で存在しない場合は①通常のプロパティキーで取得したフォルダを返す
+        return retFolder;
+    }
+    
     /**
      * メールフォルダ（原本メール用)取得 (SendInfoから）
      * @param entity
@@ -493,7 +581,7 @@ public class CommonUtil {
         //mailフォルダのサブフォルダ(servletCode)として"mailentrance"を指定
         return getFolder(FolderKbn.MAIL, MailQueue.SERVLET_CODE_VOTIROENTRANCE, mailDate, null);
     }      
-    
+
     /**
      * 送信フォルダ（NFS/Local)取得 (SendInfoから)
      * @param entity
@@ -503,9 +591,13 @@ public class CommonUtil {
      */
     public static String getFolderSend(SendInfo entity, boolean flgLocalTmp, boolean isMailFile){
         FolderKbn kbn = (flgLocalTmp ? FolderKbn.LOCAL_SEND : FolderKbn.SEND);
-        String id = (isMailFile ? "" : entity.getId());
-        return getFolder(kbn, null, entity.getProcDate(), id);
-    }    
+        if(flgLocalTmp){
+            String id = (isMailFile ? "" : entity.getId());
+            return getFolder(kbn, null, entity.getProcDate(), id);
+        }else{
+            return getExistFolder(kbn, null, entity.getProcDate(), entity.getId(), isMailFile);        //フォルダ切替え対応（v2.2.6a 2020.8.19)            
+        }
+    }  
 
     /**
      * 送信フォルダ（NFS)取得 (UploadGroupInfoから）
@@ -514,10 +606,9 @@ public class CommonUtil {
      * @return 
      */
     public static String getFolderSend(UploadGroupInfo entity, boolean isMailFile){
-        String id = (isMailFile ? "" : entity.getSendInfoId());
-        return getFolder(FolderKbn.SEND, null, entity.getProcDate(), id);
-    }      
-    
+        return getExistFolder(FolderKbn.SEND, null, entity.getProcDate(), entity.getSendInfoId(), isMailFile);        //フォルダ切替え対応（v2.2.6a 2020.8.19)            
+    }
+
     /**
      * 受信フォルダ（NFS/Local)取得
      * @param entity
@@ -534,10 +625,14 @@ public class CommonUtil {
             }
             procDate = entity.getSendInfo().getProcDate();
         }
-        String id = (isMailFile ? "" : entity.getId());     //メール本体の場合はIDサブフォルダを使用しない
-        return getFolder(kbn, null, procDate, id);
+        if(flgLocalTmp){
+            String id = (isMailFile ? "" : entity.getId());     //メール本体の場合はIDサブフォルダを使用しない
+            return getFolder(kbn, null, procDate, id);
+        }else {
+            return getExistFolder(kbn, null, procDate, entity.getId(), isMailFile);    //フォルダ切替え対応（v2.2.6a 2020.8.19)
+        }
     }    
-    
+
     /**
      * パスワード解除フォルダ（NFS/Local)取得 (ReceiveInfoから）
      * @param entity
@@ -553,18 +648,22 @@ public class CommonUtil {
             }
             procDate = entity.getSendInfo().getProcDate();
         }
-        return getFolder(kbn, null, procDate, entity.getId());
+        if(flgLocalTmp){
+            return getFolder(kbn, null, procDate, entity.getId());
+        }else {
+            return getExistFolder(kbn, null, procDate, entity.getId(), false);        //フォルダ切替え対応（2020.8.19)
+        }        
     }
-
+        
     /**
      * パスワード解除フォルダ（NFS)取得 (UploadGroupInfoから）
      * @param entity
      * @return 
      */
     public static String getFolderDecrypt(UploadGroupInfo entity){
-        return getFolder(FolderKbn.DECRYPT, null, entity.getProcDate(), entity.getMainId());
+        return getExistFolder(FolderKbn.DECRYPT, null, entity.getProcDate(), entity.getMainId(), false);       //フォルダ切替え対応（2020.8.19)
     }
-
+    
     /**
      * Votiroフォルダ)取得 (UploadGroupInfoから）
      * @param entity
