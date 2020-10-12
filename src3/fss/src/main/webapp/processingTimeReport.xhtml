@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="ja"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="WEB-INF/jsf/template.xhtml">
+        <ui:param name="dspTarget" value="processingTimeReport" />
+
+        <ui:define name="title">
+            <!--無害化処理状況表示-->
+            #{processingTimeReportView.getItemCaption('title')}
+        </ui:define>
+
+        <ui:define name="content">
+
+            <h:outputScript library="javascript" name="sendCommon.js" />
+
+            <p:panel styleClass="full box">
+                <h:form id="dispForm" style="width: 400px; margin: 0 auto;">
+                    
+                    <h:outputLabel class="pointer-events" value="#{processingTimeReportView.dispDate}">
+                        <!--日付-->
+                        <f:convertDateTime type="date" dateStyle="full" pattern="日付: yyyy/MM/dd" timeZone="JST" />
+                    </h:outputLabel>
+                    <p:dataTable
+                        id="processingTimeReportTable"
+                        var="processingTimeReport"
+                        value="#{processingTimeReportView.processingTimeReportList}"
+                        selectionMode="#{processingTimeReportView.dataTable.selectionMode}"
+                        rowKey="#{processingTimeReport.measureTime}">
+                        
+                        <!--時刻-->
+                        <p:column id="updateDate" headerText="#{processingTimeReportView.getItemCaption('dspMeasureTime')}" style="width: 50%;text-align: center">
+                            <h:outputText class="pointer-events" value="#{processingTimeReport.measureTime}" >
+                                <!--HH:mm-->
+                                <f:convertDateTime type="date" dateStyle="full" pattern="HH:mm" timeZone="JST" />
+                            </h:outputText>
+                        </p:column>                        
+                        <!--処理時間-->
+                        <p:column class="textOverflow" headerText="#{processingTimeReportView.getItemCaption('dspProcessingTime')}" style="width: 50%;text-align: center">
+                            <h:outputText class="pointer-events" value="#{processingTimeReport.processingTime}" />
+                        </p:column>
+                    </p:dataTable>
+                    <br/>
+                </h:form>
+                <h:panelGroup class="buttonGroup">
+                    <!--管理者メニューに戻る-->
+                    <p:commandButton action="manage"
+                                     value="#{processingTimeReportView.getItemCaption('dspBtnReturnManage')}" immediate="true" styleClass="backButton" />
+                </h:panelGroup>
+            </p:panel>
+        </ui:define>
+    </ui:composition>
+
+</html>
