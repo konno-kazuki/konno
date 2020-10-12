@@ -6,9 +6,9 @@ import javax.inject.Named;
 
 @Named
 @Dependent
-public class TestBatchlet implements Batchlet {
+public class TestBatchlet2 implements Batchlet {
     // コンストラクタ（CDIのために必ず必要）
-    public TestBatchlet() {}
+    public TestBatchlet2() {}
 
     @Override
     public String process() throws Exception {
@@ -18,6 +18,6 @@ public class TestBatchlet implements Batchlet {
 
     @Override
     public void stop() throws Exception {
-        System.out.println("[Batchlet] stop1234");
+        System.out.println("[Batchlet] stop5678");
     }
 }
