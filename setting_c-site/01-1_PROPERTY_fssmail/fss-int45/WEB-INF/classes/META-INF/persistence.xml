@@ -1,0 +1,1214 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.1" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+
+  <persistence-unit name="fssdb" transaction-type="JTA">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <jta-data-source>java:/fssDS</jta-data-source>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+      <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/fssdb"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/fssdb"/>
+    </properties>
+  </persistence-unit>
+
+  <persistence-unit name="99999" transaction-type="JTA">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <jta-data-source>java:/99999</jta-data-source>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+      <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/99999"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/99999"/>
+    </properties>
+  </persistence-unit>
+
+  <persistence-unit name="131202" transaction-type="JTA">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <jta-data-source>java:/131202</jta-data-source>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+      <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/131202"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/131202"/>
+    </properties>
+  </persistence-unit>
+
+  <persistence-unit name="260002" transaction-type="JTA">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <jta-data-source>java:/260002</jta-data-source>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+      <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/260002"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/260002"/>
+    </properties>
+  </persistence-unit>
+
+  <persistence-unit name="210005" transaction-type="JTA">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <jta-data-source>java:/210005</jta-data-source>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+      <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/210005"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/210005"/>
+    </properties>
+  </persistence-unit>
+
+  <persistence-unit name="131024" transaction-type="JTA">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <jta-data-source>java:/131024</jta-data-source>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+      <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/131024"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/131024"/>
+    </properties>
+  </persistence-unit>
+
+  <persistence-unit name="263664" transaction-type="JTA">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <jta-data-source>java:/263664</jta-data-source>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+      <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/263664"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/263664"/>
+    </properties>
+  </persistence-unit>
+
+  <persistence-unit name="264636" transaction-type="JTA">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <jta-data-source>java:/264636</jta-data-source>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+      <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/264636"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/264636"/>
+    </properties>
+  </persistence-unit>
+
+  <persistence-unit name="472018" transaction-type="JTA">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <jta-data-source>java:/472018</jta-data-source>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+      <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/472018"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/472018"/>
+    </properties>
+  </persistence-unit>
+
+  <persistence-unit name="262072" transaction-type="JTA">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <jta-data-source>java:/262072</jta-data-source>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+      <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/262072"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/262072"/>
+    </properties>
+  </persistence-unit>
+
+  <persistence-unit name="132021" transaction-type="JTA">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <jta-data-source>java:/132021</jta-data-source>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+      <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/132021"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/132021"/>
+    </properties>
+  </persistence-unit>
+
+  <persistence-unit name="132071" transaction-type="JTA">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <jta-data-source>java:/132071</jta-data-source>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+      <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/132071"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/132071"/>
+    </properties>
+  </persistence-unit>
+
+  <persistence-unit name="132128" transaction-type="JTA">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <jta-data-source>java:/132128</jta-data-source>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+      <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/132128"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/132128"/>
+    </properties>
+  </persistence-unit>
+
+  <persistence-unit name="132225" transaction-type="JTA">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <jta-data-source>java:/132225</jta-data-source>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+      <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/132225"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/132225"/>
+    </properties>
+  </persistence-unit>
+
+  <persistence-unit name="132233" transaction-type="JTA">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <jta-data-source>java:/132233</jta-data-source>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+      <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/132233"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/132233"/>
+    </properties>
+  </persistence-unit>
+
+  <persistence-unit name="132241" transaction-type="JTA">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <jta-data-source>java:/132241</jta-data-source>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+      <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/132241"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/132241"/>
+    </properties>
+  </persistence-unit>
+
+  <persistence-unit name="132250" transaction-type="JTA">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <jta-data-source>java:/132250</jta-data-source>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+      <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/132250"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/132250"/>
+    </properties>
+  </persistence-unit>
+
+  <persistence-unit name="132292" transaction-type="JTA">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <jta-data-source>java:/132292</jta-data-source>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+      <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/132292"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/132292"/>
+    </properties>
+  </persistence-unit>
+
+  <persistence-unit name="262111" transaction-type="JTA">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <jta-data-source>java:/262111</jta-data-source>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+      <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/262111"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/262111"/>
+    </properties>
+  </persistence-unit>
+
+  <persistence-unit name="261009" transaction-type="JTA">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <jta-data-source>java:/261009</jta-data-source>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+      <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/261009"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/261009"/>
+    </properties>
+  </persistence-unit>
+
+  <persistence-unit name="263656" transaction-type="JTA">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <jta-data-source>java:/263656</jta-data-source>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+      <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/263656"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/263656"/>
+    </properties>
+  </persistence-unit>
+
+  <persistence-unit name="263672" transaction-type="JTA">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <jta-data-source>java:/263672</jta-data-source>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+      <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/263672"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/263672"/>
+    </properties>
+  </persistence-unit>
+
+  <persistence-unit name="121002" transaction-type="JTA">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <jta-data-source>java:/121002</jta-data-source>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+      <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/121002"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/121002"/>
+    </properties>
+  </persistence-unit>
+
+  <persistence-unit name="232076" transaction-type="JTA">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <jta-data-source>java:/232076</jta-data-source>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+      <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/232076"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/232076"/>
+    </properties>
+  </persistence-unit>
+
+  <persistence-unit name="232319" transaction-type="JTA">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <jta-data-source>java:/232319</jta-data-source>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+      <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/232319"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/232319"/>
+    </properties>
+  </persistence-unit>
+
+  <persistence-unit name="235610" transaction-type="JTA">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <jta-data-source>java:/235610</jta-data-source>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+      <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/235610"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/235610"/>
+    </properties>
+  </persistence-unit>
+
+  <persistence-unit name="162027" transaction-type="JTA">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <jta-data-source>java:/162027</jta-data-source>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+      <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/162027"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/162027"/>
+    </properties>
+  </persistence-unit>
+
+  <persistence-unit name="162116" transaction-type="JTA">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <jta-data-source>java:/162116</jta-data-source>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+      <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/162116"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/162116"/>
+    </properties>
+  </persistence-unit>
+
+  <persistence-unit name="162043" transaction-type="JTA">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <jta-data-source>java:/162043</jta-data-source>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+      <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/162043"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/162043"/>
+    </properties>
+  </persistence-unit>
+
+  <persistence-unit name="162051" transaction-type="JTA">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <jta-data-source>java:/162051</jta-data-source>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+      <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/162051"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/162051"/>
+    </properties>
+  </persistence-unit>
+
+  <persistence-unit name="162060" transaction-type="JTA">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <jta-data-source>java:/162060</jta-data-source>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+      <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/162060"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/162060"/>
+    </properties>
+  </persistence-unit>
+
+  <persistence-unit name="220001" transaction-type="JTA">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <jta-data-source>java:/220001</jta-data-source>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+      <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/220001"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/220001"/>
+    </properties>
+  </persistence-unit>
+
+     <persistence-unit name="262099" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/262099</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/262099"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/262099"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="262137" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/262137</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/262137"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/262137"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="264652" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/264652</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/264652"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/264652"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="232033" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/232033</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/232033"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/232033"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="102016" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/102016</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/102016"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/102016"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="131164" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/131164</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/131164"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/131164"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="462012" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/462012</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/462012"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/462012"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="262021" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/262021</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/262021"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/262021"/>
+        </properties>
+     </persistence-unit>
+
+<persistence-unit name="263648" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/263648</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/263648"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/263648"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="262064" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/262064</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/262064"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/262064"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="262129" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/262129</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/262129"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/262129"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="472085" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/472085</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/472085"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/472085"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="472107" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/472107</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/472107"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/472107"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="472123" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/472123</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/472123"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/472123"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="131059" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/131059</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/131059"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/131059"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="132101" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/132101</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/132101"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/132101"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="162094" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>162094</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/162094"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/162094"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="162019" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/162019</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/162019"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/162019"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="263222" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/263222</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/263222"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/263222"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="262145" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/262145</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/262145"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/262145"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="999991" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/999991</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/999991"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/999991"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="264075" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/264075</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/264075"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/264075"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="262013" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/262013</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/262013"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/262013"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="262048" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/262048</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/262048"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/262048"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="262030" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/262030</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/262030"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/262030"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="162078" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/162078</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/162078"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/162078"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="162108" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/162108</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/162108"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/162108"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="163236" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/163236</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/163236"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/163236"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="263435" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/263435</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/263435"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/263435"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="262102" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/262102</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/262102"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/262102"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="263443" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/263443</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/263443"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/263443"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="262056" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/262056</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/262056"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/262056"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="262081" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/262081</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/262081"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/262081"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="263036" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/263036</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/263036"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/263036"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="472140" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/472140</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/472140"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/472140"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="222194" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/222194</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/222194"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/222194"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="473545" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/473545</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/473545"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/473545"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="222054" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/222054</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/222054"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/222054"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="222259" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/222259</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/222259"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/222259"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="222135" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/222135</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/222135"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/222135"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="222062" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/222062</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/222062"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/222062"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="222097" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/222097</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/222097"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/222097"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="222241" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/222241</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/222241"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/222241"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="223441" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/223441</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/223441"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/223441"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="222127" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/222127</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/222127"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/222127"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="222208" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/222208</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/222208"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/222208"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="222160" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/222160</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/222160"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/222160"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="222119" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/222119</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/222119"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/222119"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="221309" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/221309</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/221309"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/221309"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="224618" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/224618</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/224618"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/224618"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="222089" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/222089</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/222089"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/222089"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="223026" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/223026</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/223026"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/223026"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="224243" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/224243</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/224243"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/224243"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="222216" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/222216</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/222216"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/222216"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="222232" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/222232</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/222232"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/222232"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="222038" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/222038</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/222038"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/222038"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="224294" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/224294</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/224294"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/224294"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="223255" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/223255</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/223255"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/223255"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="222071" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>222071</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/222071"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/222071"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="222267" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/222267</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/222267"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/222267"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="212091" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/212091</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/212091"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/212091"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="132217" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/132217</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/132217"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/132217"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="222224" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/222224</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/222224"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/222224"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="223417" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/223417</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/223417"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/223417"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="223069" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/223069</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/223069"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/223069"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="223425" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/223425</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/223425"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/223425"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="222143" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/222143</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/222143"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/222143"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="223042" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/223042</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/223042"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/223042"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="222151" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/222151</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/222151"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/222151"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="223018" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/223018</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/223018"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/223018"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="131032" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/131032</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/131032"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/131032"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="223051" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/223051</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/223051"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/223051"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="462039" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/462039</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/462039"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/462039"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="235628" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/235628</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/235628"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/235628"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="270008" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/270008</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/270008"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/270008"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="268593" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/268593</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/268593"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/268593"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="800001" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/800001</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/800001"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/800001"/>
+        </properties>
+     </persistence-unit>
+
+     <persistence-unit name="060003" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <jta-data-source>java:/060003</jta-data-source>
+     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+     <properties>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory/060003"/>
+      <property name="jboss.entity.manager.jndi.name" value="java:comp/env/persistence/EntityManager/060003"/>
+        </properties>
+     </persistence-unit>
+
+</persistence>
