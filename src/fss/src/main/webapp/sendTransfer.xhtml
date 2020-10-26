@@ -238,53 +238,60 @@
                                             <f:selectItem itemValue="#{sendTransferView.DESTINATION_OTHER}" itemLabel="#{sendTransferView.getItemCaption('dspInputDestination')}" />
                                             <f:selectItem itemValue="#{sendTransferView.DESTINATION_OWN}" itemLabel="#{sendTransferView.getItemCaption('dspSendOwn')}" />
                                         </p:selectOneRadio>
-                                        <h:panelGrid columns="2" rendered="#{commonBean.isUserTypeInternalFlg()}">
-                                            <p:radioButton id="rdo1" for="destination" itemIndex="0" />
-                                            <p:outputLabel for="rdo1" value="#{sendTransferView.getItemCaption('dspInputDestination')}" />
-                                        </h:panelGrid>
 
-                                        <p:dataList  id="mailToList" value="#{sendTransferView.mailToList}" rowIndexVar="rowIndex" var="mailTo" type="ordered">
-                                            <!--メールアドレス-->
-                                            <p:autoComplete id="mailToInput" class="#{sendTransferView.getMailClassName(mailTo)}"
-                                                            value="#{mailTo.address}"
-                                                            completeMethod="#{sendTransferView.autoCompleteAddress}"
-                                                            maxlength="#{sendTransferView.addressMailCharMax}"
-                                                            style="width:40%;"
-                                                            inputStyle="width:97%;"
-                                                            placeholder="#{sendTransferView.getItemCaption('dspMailToAddressPlaceholder')}"
-                                                            disabled="#{!sendTransferView.loginFlg}"
-                                                            required="false">
-                                                <p:ajax event="itemSelect" update="mailToInput" />
-                                                <p:ajax event="change" process="mailToInput" />
-                                            </p:autoComplete>
+                                        <!-- 送信先を入力する -->
+                                        <!-- sendAdressDspFlgで表示/非表示を切替える　-->
+                                        <div style="display:#{sendTransferView.sendAdressDspFlg?'':'none'} ">
+                                            <h:panelGrid columns="2" rendered="#{commonBean.isUserTypeInternalFlg()}">
+                                                <p:radioButton id="rdo1" for="destination" itemIndex="0" />
+                                                <p:outputLabel for="rdo1" value="#{sendTransferView.getItemCaption('dspInputDestination')}" />
+                                            </h:panelGrid>
 
-                                            <!--送信先名称（任意入力）-->
-                                            <p:autoComplete id="mailToName"
-                                                            value="#{mailTo.personal}"
-                                                            completeMethod="#{sendTransferView.autoCompletePersonalName}"
-                                                            maxlength="#{sendTransferView.addressNameCharMax}"
-                                                            style="width:40%; "
-                                                            inputStyle="width:97%;"
-                                                            placeholder="#{sendTransferView.getItemCaption('dspMailToNamePlaceholder')}"
-                                                            disabled="#{!sendTransferView.loginFlg}">
-                                                <p:ajax event="itemSelect" update="mailToName" />
-                                                <p:ajax event="change" process="mailToName" />
-                                            </p:autoComplete>
-                                            <!--削除-->
-                                            <p:commandButton id="btnMailToDel" icon="ui-icon-close"
-                                                             alt="#{sendTransferView.getItemCaption('dspBtnDelete')}"
-                                                             style="width:22px;height: 22px;vertical-align: middle;margin-left: 5px"
-                                                             actionListener="#{sendTransferView.deleteMailToAction(mailTo)}"
-                                                             update="mailToList" rendered="#{sendTransferView.loginFlg}"
-                                                             immediate="true" />
-                                            <!--追加-->
-                                            <p:commandButton id="btnMailToAdd" icon="ui-icon-plus"
-                                                             alt="#{sendTransferView.getItemCaption('dspBtnAdd')}"
-                                                             style="width:22px;height: 22px;vertical-align: middle;margin-left: 5px"
-                                                             actionListener="#{sendTransferView.addMailToAction(mailTo)}"
-                                                             update="mailToList" rendered="#{sendTransferView.loginFlg}"
-                                                             immediate="true" />
-                                        </p:dataList>
+                                            <p:dataList  id="mailToList" value="#{sendTransferView.mailToList}" rowIndexVar="rowIndex" var="mailTo" type="ordered">
+                                                <!--メールアドレス-->
+                                                <p:autoComplete id="mailToInput" class="#{sendTransferView.getMailClassName(mailTo)}"
+                                                                value="#{mailTo.address}"
+                                                                completeMethod="#{sendTransferView.autoCompleteAddress}"
+                                                                maxlength="#{sendTransferView.addressMailCharMax}"
+                                                                style="width:40%;"
+                                                                inputStyle="width:97%;"
+                                                                placeholder="#{sendTransferView.getItemCaption('dspMailToAddressPlaceholder')}"
+                                                                disabled="#{!sendTransferView.loginFlg}"
+                                                                required="false">
+                                                    <p:ajax event="itemSelect" update="mailToInput" />
+                                                    <p:ajax event="change" process="mailToInput" />
+                                                </p:autoComplete>
+
+                                                <!--送信先名称（任意入力）-->
+                                                <p:autoComplete id="mailToName"
+                                                                value="#{mailTo.personal}"
+                                                                completeMethod="#{sendTransferView.autoCompletePersonalName}"
+                                                                maxlength="#{sendTransferView.addressNameCharMax}"
+                                                                style="width:40%; "
+                                                                inputStyle="width:97%;"
+                                                                placeholder="#{sendTransferView.getItemCaption('dspMailToNamePlaceholder')}"
+                                                                disabled="#{!sendTransferView.loginFlg}">
+                                                    <p:ajax event="itemSelect" update="mailToName" />
+                                                    <p:ajax event="change" process="mailToName" />
+                                                </p:autoComplete>
+                                                <!--削除-->
+                                                <p:commandButton id="btnMailToDel" icon="ui-icon-close"
+                                                                 alt="#{sendTransferView.getItemCaption('dspBtnDelete')}"
+                                                                 style="width:22px;height: 22px;vertical-align: middle;margin-left: 5px"
+                                                                 actionListener="#{sendTransferView.deleteMailToAction(mailTo)}"
+                                                                 update="mailToList" rendered="#{sendTransferView.loginFlg}"
+                                                                 immediate="true" />
+                                                <!--追加-->
+                                                <p:commandButton id="btnMailToAdd" icon="ui-icon-plus"
+                                                                 alt="#{sendTransferView.getItemCaption('dspBtnAdd')}"
+                                                                 style="width:22px;height: 22px;vertical-align: middle;margin-left: 5px"
+                                                                 actionListener="#{sendTransferView.addMailToAction(mailTo)}"
+                                                                 update="mailToList" rendered="#{sendTransferView.loginFlg}"
+                                                                 immediate="true" />
+                                            </p:dataList>
+                                        </div>
+                                            
+                                        <!-- 自分へ送る-->
                                         <h:panelGrid columns="2" rendered="#{commonBean.isUserTypeInternalFlg()}">
                                             <p:radioButton id="rdo2" for="destination" itemIndex="1" />
                                             <p:outputLabel for="rdo2" value="#{sendTransferView.getItemCaption('dspSendOwn')}" />
@@ -331,6 +338,9 @@
                                     <!--パスワード-->
                                     <p:column styleClass="ui-widget-header" >#{sendTransferView.getItemCaption('dspPassword')}</p:column>
                                     <p:column style="vertical-align: middle">
+                                        <!-- sendAdressDspFlgで表示/非表示を切替える　-->
+                                        <div style="display:#{sendTransferView.sendAdressDspFlg?'':'none'} ">
+                                        
                                         <!--自動-->
                                         <p:selectBooleanCheckbox value="#{sendTransferView.sendInfo.passAuto}" itemLabel="#{sendTransferView.getItemCaption('dspPasswordAuto')}" >
                                             <p:ajax  update="mailGrid" />
@@ -357,6 +367,7 @@
                                                                  style="margin-left: 5px">
                                             <p:ajax />
                                         </p:selectBooleanCheckbox>
+                                        </div>
                                     </p:column>
                                 </p:row>
                             </p:panelGrid>

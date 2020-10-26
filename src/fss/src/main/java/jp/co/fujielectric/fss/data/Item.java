@@ -130,7 +130,10 @@ public class Item {
 
     //無害化処理中ファイル送信チェック時間（単位：分)[v2.2.6]
     public static final Item SEND_FILE_TRANSFER_PROCESSING_CHECK_TIME = new Item("sendFileTransferProcessingCheckTime", CONFIG);
-    
+
+    //ファイル送信画面送信先入力表示フラグ
+    public static final Item SEND_ADRESS_DSP_FLG = new Item("sendAdressDspFlg", CONFIG);
+
     /**
      * パスワードポリシー用config情報enum
      */
