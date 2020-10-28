@@ -153,12 +153,6 @@ public class SendTransferView extends SendCommonView implements Serializable {
     private final boolean APPROVALS_REQUIRED_ALLFLG_ON = true;      //全員が承認したらファイルを送信
     @Getter
     private final boolean APPROVALS_REQUIRED_ALLFLG_OFF = false;    //１人が承認したらファイルを送信
-    
-    /**
-     * ファイル送信画面送信先入力表示フラグ (v2.2.7)
-     */
-    @Getter
-    protected boolean sendAdressDspFlg = true;
 
     //dispMessage.itemkey
     /**
@@ -291,12 +285,8 @@ public class SendTransferView extends SendCommonView implements Serializable {
             LOG.debug("nonSanitizeFlg=" + nonSanitizeFlg + "|" + "passwordUnlockFlg=" + passwordUnlockFlg);
         }
 
-        //送信先情報選択初期値        
-        if( sendAdressDspFlg == false){
-            //ワンタイム（送信依頼）以外かつconfigのsendAdressDspFlgがfalseの場合は「自分へ送る」を選択 (v2.2.7)
-            destination = DESTINATION_OWN;
-        }
-        else if (!StringUtils.isBlank(sendFileBean.getDestination())) {
+        //送信先情報選択初期値
+        if (!StringUtils.isBlank(sendFileBean.getDestination())) {
             destination = sendFileBean.getDestination();
         } else {
             destination = DESTINATION_OTHER;
@@ -363,15 +353,6 @@ public class SendTransferView extends SendCommonView implements Serializable {
                 fileIncludeSufList.add(suf.toLowerCase());
             }
         } catch (Exception e) {
-        }
-        
-        //ファイル送信画面送信先入力表示フラグ (v2.2.7)
-        //ワンタイム（送信依頼）以外かつconfigのsendAdressDspFlgがfalseの場合は送信先およびパスワードを非表示とする
-        if(commonBean.isUserTypeInternalFlg() && commonBean.isLoginFlg()){
-            sendAdressDspFlg = itemHelper.findWithDefault(Item.SEND_ADRESS_DSP_FLG, Item.FUNC_COMMON, "true").equalsIgnoreCase("true");  
-        }else{
-            //庁外ユーザ、ワンタイム（送信依頼）の場合は表示
-            sendAdressDspFlg = true;
         }
     }
 

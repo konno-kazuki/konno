@@ -308,7 +308,7 @@
                             <p:panel style="display: inline-block; width: 650px; margin: 10px 20px 10px 20px; background-color: honeydew; word-wrap: break-word;"
                                      rendered="#{(!sendTransferView.execResultOK) and (!sendTransferView.confApprovalRequest)}">
                                 <div style="margin: 0px 10px; text-align: left; font-size: x-large; line-height: 1.5;">
-                                    <pre>#{sendTransferView.getItemCaption(sendTransferView.destination == sendTransferView.DESTINATION_OTHER?'infDialogText':'infDialogTextSelf')}</pre>
+                                    <pre>#{sendTransferView.getItemCaption('infDialogText')}</pre>
                                 </div>
                             </p:panel>
                             <!--ファイル送信承認用-->
